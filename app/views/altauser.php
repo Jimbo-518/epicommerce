@@ -78,11 +78,16 @@ input {
         <label for="rol">Rol del empleado</label>
         <select class="selection" id="rol" name="rol">
             <option disabled selected value="">-- Escoja un rol --</option>
-            <option value="surtidor">Surtidor</option>
-            <option value="administrador">Administrador</option>
-            <option value="gestor">Gestor</option>
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "" : "none"; ?>;" value="surtidor">Empleado</option>
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "" : "none"; ?>;" value="administrador">Administrador</option>
+
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="gestor">Gestor</option>
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="rh">RH</option>
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="contabilidad">Contabilidad</option>
+            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="empleado">Empleado</option>
         </select>
 
+        <input type="hidden" id="area" name="area" value="<?= htmlspecialchars($area); ?>">
         <input type="hidden" id="creator" name="creator" value="<?= htmlspecialchars($name); ?>">
 
         <button type="submit">AGREGAR</button>

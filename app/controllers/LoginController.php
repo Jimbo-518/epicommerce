@@ -21,6 +21,7 @@ class LoginController extends Controller {
                 Session::start();
                 Session::set('usuario', $usuario['Usuario']);
                 Session::set('rol', $usuario['Rol']);
+                Session::set('area', $usuario['area']);
                 Session::set('name', $usuario['Nombre']);
                 
                 header("Location: " . BASE_URL . "dashboard");

@@ -15,9 +15,10 @@
             <?php require_once '../app/views/templates/menu.php'; ?>
             
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">Hola <?= htmlspecialchars($name) ?></h1>
-                <h3>¿Qué haremos hoy...?</h3>
+                <h1 class="page-header">Hola <?= htmlspecialchars($name); ?></h1>
 
+            <!--Aquí inicia el contenido específico del área de bodega -->
+            <div style="display: <?php echo $ocultarbloque = ($area != "cedis")? "none": ""; ?>;">
                 <div class="row placeholders">
           <div class="col-xs-12 col-sm-3 placeholder">
             <a href="<?= BASE_URL ?>buscador">
@@ -59,6 +60,12 @@
             <?php endforeach; ?>
         </tbody>
     </table>
+                </div><!--Aquí termina el contenido específico del área de bodega -->
+            <!-- Comienza el contenido para el área administrativa--> 
+            <div> <center>
+                <h1>. . . En Construcción . . .</h1></center>
+            </div>
+            <!--Aquí termina el contenido específico del área administrativa -->
             </div>
         </div>
     </div>

@@ -24,17 +24,18 @@ class Usuario
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function registrar($nombre, $usuario, $password, $rol, $creador)
+    public static function registrar($nombre, $usuario, $password, $area, $rol, $creador)
     {
         $db = Database::getConnection();
         $stmt = $db->prepare("
-            INSERT INTO usuario (Nombre, Usuario, Password, Rol, Creador) 
-            VALUES (:nombre, :usuario, :password, :rol, :creador)
+            INSERT INTO usuario (Nombre, Usuario, Password, area, Rol, Creador) 
+            VALUES (:nombre, :usuario, :password, :area, :rol, :creador)
         ");
         return $stmt->execute([
             'nombre' => $nombre,
             'usuario' => $usuario,
             'password' => $password,
+            'area' => $area,
             'rol' => $rol,
             'creador' => $creador
         ]);

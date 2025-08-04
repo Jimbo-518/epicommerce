@@ -8,11 +8,14 @@ class UsuarioController extends Controller {
 
         $rol = Session::get('rol');
         $name = Session::get('name');
+        $area = Session::get('area');
 
-        if ($rol !== 'gestor' && $rol !== 'administrador') {
+        /*
+        if ($rol !== 'rh') {
             header("Location: " . BASE_URL . "dashboard");
             exit();
         }
+        */
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -20,7 +23,8 @@ class UsuarioController extends Controller {
         $this->view('altauser', [
             'error_message' => $error_message,
             'name' => $name,
-            'rol' => $rol
+            'rol' => $rol,
+            'area' => $area
         ]);
     }
 
@@ -31,10 +35,11 @@ class UsuarioController extends Controller {
             $nombre = $_POST['name'];
             $usuario = $_POST['user'];
             $password = password_hash($_POST['psswrd'], PASSWORD_BCRYPT);
+            $area = $_POST['area'];
             $rol = $_POST['rol'];
             $creador = Session::get('name');
 
-            $resultado = Usuario::registrar($nombre, $usuario, $password, $rol, $creador);
+            $resultado = Usuario::registrar($nombre, $usuario, $password, $area, $rol, $creador);
 
             if ($resultado) {
                 Session::set('message', "Usuario agregado correctamente");

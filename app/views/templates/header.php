@@ -8,13 +8,13 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="<?= BASE_URL ?>dashboard">INVENTARIO ECOMMERCE</a>
+            <a class="navbar-brand" href="<?= BASE_URL ?>dashboard">EPICOMMERCE</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<?= BASE_URL ?>dashboard">Inicio</a></li>
-                <li><a href="<?= BASE_URL ?>buscador">Buscador</a></li>
-                <li><a href="<?= BASE_URL ?>logout">Cerrar Sesión</a></li>
+                <li style="display: <?php echo $activarrol = ($area != "cedis")? "none" : ""; ?>;"><a href="<?= BASE_URL ?>buscador">Buscador</a></li>
+                <li><a href="<?= BASE_URL ?>login/logout">Cerrar Sesión</a></li>
             </ul>
         </div>
     </div>

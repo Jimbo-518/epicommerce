@@ -13,6 +13,7 @@ class DashboardController extends Controller {
 
         $rol = Session::get('rol');
         $name = Session::get('name');
+        $area = Session::get('area');
 
         error_log("Usuario en sesión: " . ($rol ?: 'No definido'));
         error_log("Nombre en sesión: " . ($name ?: 'No definido'));
@@ -22,6 +23,7 @@ class DashboardController extends Controller {
         $this->view('dashboard', [
             'rol' => $rol,
             'name' => $name,
+            'area' => $area,
             'inventario' => $inventario
         ]);
     }
