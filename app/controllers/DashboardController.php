@@ -11,19 +11,19 @@ class DashboardController extends Controller {
             exit();
         }
 
-        $rol = Session::get('rol');
-        $name = Session::get('name');
         $area = Session::get('area');
+        $name = Session::get('name');
+        $edificio = Session::get('edificio');
 
-        error_log("Usuario en sesión: " . ($rol ?: 'No definido'));
+        error_log("Usuario en sesión: " . ($area ?: 'No definido'));
         error_log("Nombre en sesión: " . ($name ?: 'No definido'));
 
         $inventario = Inventario::obtenerEstadisticasPorMarca();
 
         $this->view('dashboard', [
-            'rol' => $rol,
-            'name' => $name,
             'area' => $area,
+            'name' => $name,
+            'edificio' => $edificio,
             'inventario' => $inventario
         ]);
     }

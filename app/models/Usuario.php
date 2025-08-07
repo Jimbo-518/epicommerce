@@ -6,11 +6,11 @@ class Usuario
     public static function verificarCredenciales($username, $password)
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM usuario WHERE Usuario = :usuario");
+        $stmt = $db->prepare("SELECT * FROM empleados WHERE usuario = :usuario");
         $stmt->execute(['usuario' => $username]);
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($usuario && password_verify($password, $usuario['Password'])) {
+        if ($usuario && password_verify($password, $usuario['password'])) {
             return $usuario;
         }
         return false;
@@ -19,24 +19,26 @@ class Usuario
     public static function obtenerUsuario($username)
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM usuario WHERE Usuario = :usuario");
+        $stmt = $db->prepare("SELECT * FROM empleados WHERE usuario = :usuario");
         $stmt->execute(['usuario' => $username]);
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-    public static function registrar($nombre, $usuario, $password, $area, $rol, $creador)
+    public static function registrar($id, $nombre, $edificio, $area, $vacaciones, $usuario, $password, $creador)
     {
         $db = Database::getConnection();
         $stmt = $db->prepare("
-            INSERT INTO usuario (Nombre, Usuario, Password, area, Rol, Creador) 
-            VALUES (:nombre, :usuario, :password, :area, :rol, :creador)
+            INSERT INTO empleados (id_empleado, nombre, edificio, area, vacaciones, usuario, password, creador) 
+            VALUES (:id_empleado, :nombre, :edificio, :area, :vacaciones, :usuario, :password, :creador)
         ");
         return $stmt->execute([
+            'id_empleado' => $id,
             'nombre' => $nombre,
+            'edificio' => $edificio,
+            'area' => $area,
+            'vacaciones' => $vacaciones,
             'usuario' => $usuario,
             'password' => $password,
-            'area' => $area,
-            'rol' => $rol,
             'creador' => $creador
         ]);
     }
@@ -44,7 +46,7 @@ class Usuario
     public static function obtenerUsuarioPorNombre($username)
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM usuario WHERE Usuario = :Usuario LIMIT 1");
+        $stmt = $db->prepare("SELECT * FROM empleados WHERE usuario = :Usuario LIMIT 1");
         $stmt->bindParam(':Usuario', $username);
         $stmt->execute();
 

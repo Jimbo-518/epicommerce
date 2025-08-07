@@ -6,9 +6,9 @@ class UsuarioController extends Controller {
     public function altauser() {
         Session::start();
 
-        $rol = Session::get('rol');
-        $name = Session::get('name');
         $area = Session::get('area');
+        $name = Session::get('name');
+        $edificio = Session::get('edificio');
 
         /*
         if ($rol !== 'rh') {
@@ -22,9 +22,9 @@ class UsuarioController extends Controller {
 
         $this->view('altauser', [
             'error_message' => $error_message,
+            'area' => $area,
             'name' => $name,
-            'rol' => $rol,
-            'area' => $area
+            'edificio' => $edificio
         ]);
     }
 
@@ -32,14 +32,16 @@ class UsuarioController extends Controller {
         Session::start();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id'];
             $nombre = $_POST['name'];
             $usuario = $_POST['user'];
             $password = password_hash($_POST['psswrd'], PASSWORD_BCRYPT);
+            $edificio = $_POST['edificio'];
             $area = $_POST['area'];
-            $rol = $_POST['rol'];
+            $vacaciones = $_POST['vacaciones'];
             $creador = Session::get('name');
 
-            $resultado = Usuario::registrar($nombre, $usuario, $password, $area, $rol, $creador);
+            $resultado = Usuario::registrar($id, $nombre, $edificio, $area, $vacaciones, $usuario, $password, $creador);
 
             if ($resultado) {
                 Session::set('message', "Usuario agregado correctamente");

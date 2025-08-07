@@ -19,10 +19,13 @@ class LoginController extends Controller {
                    
             if ($usuario) {
                 Session::start();
-                Session::set('usuario', $usuario['Usuario']);
-                Session::set('rol', $usuario['Rol']);
+                Session::set('name', $usuario['nombre']);
+                Session::set('edificio', $usuario['edificio']);
                 Session::set('area', $usuario['area']);
-                Session::set('name', $usuario['Nombre']);
+                
+                Session::set('usuario', $usuario['usuario']);
+                Session::set('vacaciones', $usuario['vacaciones']);
+                Session::set('creador', $usuario['creador']);
                 
                 header("Location: " . BASE_URL . "dashboard");
                 exit();

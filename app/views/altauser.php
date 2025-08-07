@@ -66,7 +66,7 @@ input {
     <?php endif; ?>
 
     <form method="POST" action="<?= BASE_URL ?>usuario/registrar">
-        <label for="name">Nombre del empleado</label>
+        <label for="name">Nombre completo del empleado</label>
         <input type="text" id="name" name="name" required>
 
         <label for="user">Usuario a usar</label>
@@ -76,18 +76,25 @@ input {
         <input class="" type="password" id="psswrd" name="psswrd" required>
 
         <label for="rol">Rol del empleado</label>
-        <select class="selection" id="rol" name="rol">
+        <select class="selection" id="area" name="area">
             <option disabled selected value="">-- Escoja un rol --</option>
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "" : "none"; ?>;" value="surtidor">Empleado</option>
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "" : "none"; ?>;" value="administrador">Administrador</option>
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "" : "none"; ?>;" value="surtidor">Empleado</option>
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "" : "none"; ?>;" value="administrador">Administrador</option>
 
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="gestor">Gestor</option>
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="rh">RH</option>
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="contabilidad">Contabilidad</option>
-            <option style="display: <?php echo $activarrol = ($area = "cedis")? "none" : ""; ?>;" value="empleado">Empleado</option>
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="gestor">Gestor</option>
+            
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="rh">RH</option>
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="contabilidad">Contabilidad</option>
+            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="empleado">Empleado</option>
         </select>
 
-        <input type="hidden" id="area" name="area" value="<?= htmlspecialchars($area); ?>">
+        <label for="id">ID en el Checador</label>
+        <input type="number" id="id" name="id" required>
+
+        <label for="vacaciones">Días de vacaciones</label>
+        <input type="number" id="vacaciones" name="vacaciones" required>
+
+        <input type="hidden" id="edificio" name="edificio" value="<?= htmlspecialchars($edificio); ?>">
         <input type="hidden" id="creator" name="creator" value="<?= htmlspecialchars($name); ?>">
 
         <button type="submit">AGREGAR</button>

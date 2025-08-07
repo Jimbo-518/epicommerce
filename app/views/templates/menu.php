@@ -4,14 +4,14 @@ $current_page = $_GET['url'] ?? 'dashboard';
 
 <div class="col-sm-3 col-md-2 sidebar">
     <!-- Lista Para el menú de Cedis -->
-    <ul style="display: <?php echo $activarrol = ($area != "cedis")? "none" : ""; ?>;" class="nav nav-sidebar">
+    <ul style="display: <?php echo $activarrol = ($edificio != "cedis")? "none" : ""; ?>;" class="nav nav-sidebar">
         <li class="<?= ($current_page === 'dashboard') ? 'active' : '' ?>">
             <a href="<?= BASE_URL ?>dashboard">INICIO</a>
         </li>
         <li class="<?= ($current_page === 'buscador') ? 'active' : '' ?>">
             <a href="<?= BASE_URL ?>buscador">Buscador</a>
         </li>
-        <?php if ($rol != 'surtidor'): ?>
+        <?php if ($area != 'surtidor'): ?>
             <li class="<?= ($current_page === 'exportfile') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>exportfile">Descargar inventario</a>
             </li>
@@ -26,14 +26,20 @@ $current_page = $_GET['url'] ?? 'dashboard';
             </li>
         <?php endif; ?>
     </ul>
-    <ul style="display: <?php echo $activarrol = ($area != "cedis")? "" : "none"; ?>;" class="nav nav-sidebar">
+    <!-- Lista Para el menú de Administración -->
+    <ul style="display: <?php echo $activarrol = ($edificio != "cedis")? "" : "none"; ?>;" class="nav nav-sidebar">
         <li class="<?= ($current_page === 'dashboard') ? 'active' : '' ?>">
             <a href="<?= BASE_URL ?>dashboard">INICIO</a>
         </li>
-        <?php //if ($rol == 'rh'): ?>
+        <?php //if ($rol == 'rh' || $rol == 'contabilidad'): ?>
+            <li><h3>­ Gestión:</h3></li>
             <li class="<?= ($current_page === 'usuario/altauser') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>usuario/altauser">Alta de Usuarios</a>
             </li>
+            <li><h3>­ Control:</h3></li>
+            <li>Alertas</li>
+            <li>Empleados</li>
+            <li>Justificantes</li>
         <?php //endif; ?>
     </ul>
 

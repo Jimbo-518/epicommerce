@@ -18,7 +18,7 @@
                 <h1 class="page-header">Hola <?= htmlspecialchars($name); ?></h1>
 
             <!--Aquí inicia el contenido específico del área de bodega -->
-            <div style="display: <?php echo $ocultarbloque = ($area != "cedis")? "none": ""; ?>;">
+            <div style="display: <?php echo $ocultarbloque = ($edificio != "cedis")? "none": ""; ?>;">
                 <div class="row placeholders">
           <div class="col-xs-12 col-sm-3 placeholder">
             <a href="<?= BASE_URL ?>buscador">
