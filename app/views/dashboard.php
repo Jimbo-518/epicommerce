@@ -62,8 +62,21 @@
     </table>
                 </div><!--Aquí termina el contenido específico del área de bodega -->
             <!-- Comienza el contenido para el área administrativa--> 
-            <div> <center>
-                <h1>. . . En Construcción . . .</h1></center>
+            <div class="row">
+                <div class="col-md-3">
+                    <center>
+                    <img src="./assets/img/xlsx.png" alt="ícono de documento excel" height="150px">
+                    <hr>
+                    <a href="<?= BASE_URL ?>usuario/generarInforme" class="btn btn-primary">Descargar Informe</a>
+                    </center>
+                </div>
+                <div class="col-md-3">
+                    <center>
+                    <img src="./assets/img/carga-en-la-nube.png" alt="ícono de documento excel por subir" height="150px">
+                    <hr>
+                    <a href="<?= BASE_URL ?>usuario/generarInforme" class="btn btn-primary">Subir Asistencias</a>
+                    </center>
+                </div>
             </div>
             <!--Aquí termina el contenido específico del área administrativa -->
             </div>

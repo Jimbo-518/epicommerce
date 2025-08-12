@@ -90,5 +90,9 @@ class UsuarioController extends Controller
             }
         }
     }
+
+    public static function generarInforme(){
+        
+    }
 }
 ?>

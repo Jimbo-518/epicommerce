@@ -2,6 +2,9 @@
 require_once '../vendor/autoload.php';
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 require_once dirname(__DIR__, 2) . '/config/Database.php';
 
 class Usuario
@@ -94,6 +97,53 @@ class Usuario
         // Output the generated PDF to Browser
          $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
+/*
+    public static function generarExcel(){
+        $db = Database::getConnection();
 
+        $columnasExcel = ['EMPLEADO','DÍAS TRABAJADOS','RETARDOS','FALTAS','JUSTIFICANTE'];
+
+        $spreadsheet = new Spreadsheet();
+        $spreadsheet->getProperties()->setCreator("COLEmx")->setTitle("Informe de asistencias");
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Encabezados
+        $colIndex = 'A';
+        foreach ($columnasExcel as $titulo) {
+            $sheet->setCellValue($colIndex . '1', $titulo);
+            $colIndex++;
+        }
+        $sheet->getStyle('A1:' . chr(ord('A') + count($columnasExcel) - 1) . '1')->getFont()->setBold(true);
+
+        $placeholders = implode(',', array_fill(0, count($marcas), '?'));
+        $sql = "
+        SELECT s.Marbete, s.UPC, s.Cantidad,
+               p.Parte, p.Modelo, p.Descripción, p.Marca
+        FROM stock s
+        INNER JOIN prenda p ON s.UPC = p.UPC
+        WHERE p.Marca IN ($placeholders)
+    ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute($marcas);
+
+        // Llenar Excel
+        $fila = 2;
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $colIndex = 'A';
+            foreach (['Marbete', 'UPC', 'Cantidad', 'Parte', 'Modelo', 'Descripción', 'Marca'] as $campo) {
+                $sheet->setCellValue($colIndex . $fila, $row[$campo] ?? '');
+                $colIndex++;
+            }
+            $fila++;
+        }
+
+        header('Content-Type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment;filename="BDexport.xls"');
+        header('Cache-Control: max-age=0');
+
+        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer->save('php://output');
+        exit;
+    }*/
 }
 ?>

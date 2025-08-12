@@ -71,6 +71,8 @@
                                 <th>Área</th>
                                 <th>Vacaciones</th>
                                 <th>Reporte</th>
+                                <th>-</th>
+                                <th>-</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +86,8 @@
                                     <td><?= htmlspecialchars($empleado['area']) ?></td>
                                     <td><?= htmlspecialchars($empleado['vacaciones']) ?></td>
                                     <td><button type="isset" class="btn btn-danger">PDF</button></td>
+                                    <td><button class="btn btn-info">EDITAR</button></td>
+                                    <td><button class="btn btn-warning">BAJA</button></td>
                                     </form>
                                 </tr>
                             <?php endforeach; ?>
