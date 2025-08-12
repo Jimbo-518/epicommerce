@@ -2,8 +2,10 @@
 require_once '../app/core/Session.php';
 require_once '../app/models/Usuario.php';
 
-class UsuarioController extends Controller {
-    public function altauser() {
+class UsuarioController extends Controller
+{
+    public function altauser()
+    {
         Session::start();
 
         $area = Session::get('area');
@@ -28,7 +30,30 @@ class UsuarioController extends Controller {
         ]);
     }
 
-    public function registrar() {
+    public function verempleados()
+    {
+        Session::start();
+
+        $area = Session::get('area');
+        $name = Session::get('name');
+        $edificio = Session::get('edificio');
+
+        $error_message = Session::get('error_message');
+        Session::remove('error_message');
+
+        $empleados = Usuario::listaempleados();
+
+        $this->view('verempleados', [
+            'error_message' => $error_message,
+            'area' => $area,
+            'name' => $name,
+            'edificio' => $edificio,
+            'empleados' => $empleados
+        ]);
+    }
+
+    public function registrar()
+    {
         Session::start();
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -48,9 +73,21 @@ class UsuarioController extends Controller {
             } else {
                 Session::set('error_message', "Error al registrar usuario.");
             }
-    
+
             header("Location: " . BASE_URL . "usuario/altauser");
             exit();
+        }
+
+    }
+    public function generarReporte()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id_empleado'];
+
+            $userInfo = Usuario::pushUserID($id);
+            if ($userInfo) {
+                Usuario::generarReporte($userInfo);
+            }
         }
     }
 }

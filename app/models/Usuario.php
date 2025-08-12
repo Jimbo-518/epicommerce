@@ -1,4 +1,7 @@
 <?php
+require_once '../vendor/autoload.php';
+use Dompdf\Dompdf;
+use Dompdf\Options;
 require_once dirname(__DIR__, 2) . '/config/Database.php';
 
 class Usuario
@@ -16,12 +19,17 @@ class Usuario
         return false;
     }
 
-    public static function obtenerUsuario($username)
+    public static function listaempleados()
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM empleados WHERE usuario = :usuario");
-        $stmt->execute(['usuario' => $username]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $stmt = $db->prepare("SELECT * FROM empleados");
+        $stmt->execute();
+        $usuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($usuario) {
+            return $usuario;
+        }
+        return false;
     }
 
     public static function registrar($id, $nombre, $edificio, $area, $vacaciones, $usuario, $password, $creador)
@@ -51,6 +59,40 @@ class Usuario
         $stmt->execute();
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function pushUserID($id)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM empleados WHERE id_empleado = :id_empleado LIMIT 1");
+        $stmt->bindParam(':id_empleado', $id);
+        $stmt->execute();
+
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public static function generarReporte($userInfo)
+    {
+        ob_start();
+        $empleado = $userInfo;
+        require __DIR__ . '/../views/reportes/empleado.php';
+        $html = ob_get_clean();
+
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+
+        // instantiate and use the dompdf class
+        $dompdf = new Dompdf($options);
+        $dompdf->loadHtml($html);
+
+        // (Optional) Setup the paper size and orientation
+        $dompdf->setPaper('A4', 'Portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser
+         $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
 
 }

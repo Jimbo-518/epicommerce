@@ -32,13 +32,15 @@ $current_page = $_GET['url'] ?? 'dashboard';
             <a href="<?= BASE_URL ?>dashboard">INICIO</a>
         </li>
         <?php //if ($rol == 'rh' || $rol == 'contabilidad'): ?>
-            <li><h3>­ Gestión:</h3></li>
             <li class="<?= ($current_page === 'usuario/altauser') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>usuario/altauser">Alta de Usuarios</a>
             </li>
-            <li><h3>­ Control:</h3></li>
+
+
+            <li class="<?= ($current_page === 'usuario/verempleados') ? 'active' : '' ?>">
+                <a href="<?= BASE_URL ?>usuario/verempleados">Ver empleados</a>
+            </li>
             <li>Alertas</li>
-            <li>Empleados</li>
             <li>Justificantes</li>
         <?php //endif; ?>
     </ul>
