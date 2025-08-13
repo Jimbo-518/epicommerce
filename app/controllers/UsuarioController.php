@@ -94,5 +94,29 @@ class UsuarioController extends Controller
     public static function generarInforme(){
         
     }
+
+    public static function subirAsistencias(){
+        Session::start();
+        $archivo = $_GET['archivo'] ?? '';
+        $name = Session::get('name');
+    
+        if (!$archivo) {
+            Session::set('error_message', 'Archivo no especificado.');
+            echo json_encode(['redirect' => BASE_URL . 'importfile']);
+            return;
+        }
+    
+        $ruta = dirname(__DIR__, 2) . '/public/uploads/' . $archivo;
+        $resultado = Usuario::procesarAsistencias($ruta);
+    
+        if ($resultado) {
+            Session::set('message', 'Archivo procesado exitosamente.');
+            echo json_encode(['redirect' => BASE_URL . 'importfile']);
+        } else {
+            Session::set('error_message', 'Error al procesar el archivo.');
+            echo json_encode(['redirect' => BASE_URL . 'importfile']);
+        }
+        
+    }
 }
 ?>

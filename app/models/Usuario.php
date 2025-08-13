@@ -97,6 +97,10 @@ class Usuario
         // Output the generated PDF to Browser
          $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
+
+    public static function procesarAsistencias($ruta){
+        return false; // Placeholder for processing logic
+    }
 /*
     public static function generarExcel(){
         $db = Database::getConnection();
