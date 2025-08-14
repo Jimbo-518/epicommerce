@@ -1,6 +1,7 @@
 <?php
 require_once '../app/core/Session.php';
 require_once '../app/models/Usuario.php';
+require_once '../app/models/Asistencias.php';
 
 class UsuarioController extends Controller
 {
@@ -27,28 +28,6 @@ class UsuarioController extends Controller
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio
-        ]);
-    }
-
-    public function verempleados()
-    {
-        Session::start();
-
-        $area = Session::get('area');
-        $name = Session::get('name');
-        $edificio = Session::get('edificio');
-
-        $error_message = Session::get('error_message');
-        Session::remove('error_message');
-
-        $empleados = Usuario::listaempleados();
-
-        $this->view('verempleados', [
-            'error_message' => $error_message,
-            'area' => $area,
-            'name' => $name,
-            'edificio' => $edificio,
-            'empleados' => $empleados
         ]);
     }
 
@@ -79,23 +58,12 @@ class UsuarioController extends Controller
         }
 
     }
-    public function generarReporte()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id_empleado'];
-
-            $userInfo = Usuario::pushUserID($id);
-            if ($userInfo) {
-                Usuario::generarReporte($userInfo);
-            }
-        }
-    }
 
     public static function generarInforme()
     {
         Session::start();
         try {
-            Usuario::generarExcel();
+            Asistencias::generarExcel();
             echo json_encode(['redirect' => BASE_URL . 'dashboard']);
         } catch (Exception $e) {
             echo "Error: " . $e->getMessage();
@@ -160,7 +128,7 @@ class UsuarioController extends Controller
         }
     
         $ruta = dirname(__DIR__, 2) . '/public/uploads/' . $archivo;
-        $resultado = Usuario::procesarAsistencias($ruta);
+        $resultado = Asistencias::procesarAsistencias($ruta);
     
         if ($resultado) {
             Session::set('message', 'Archivo procesado exitosamente.');

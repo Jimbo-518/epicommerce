@@ -36,7 +36,7 @@ $current_page = $_GET['url'] ?? 'dashboard';
                 <a href="<?= BASE_URL ?>usuario/altauser">Alta de Usuarios</a>
             </li>
             <li class="<?= ($current_page === 'usuario/verempleados') ? 'active' : '' ?>">
-                <a href="<?= BASE_URL ?>usuario/verempleados">Ver empleados</a>
+                <a href="<?= BASE_URL ?>verempleados/verempleados">Ver empleados</a>
             </li>
             
             <li>Justificantes</li>

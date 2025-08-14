@@ -26,6 +26,13 @@ Session::remove('error_message');
 
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">Hola <?= htmlspecialchars($name); ?></h1>
+                <?php if (!empty($error_message)): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
+                <?php endif; ?>
+
+                <?php if (!empty($message)): ?>
+                    <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+                <?php endif; ?>
 
                 <!--Aquí inicia el contenido específico del área de bodega -->
                 <div style="display: <?php echo $ocultarbloque = ($edificio != "cedis") ? "none" : ""; ?>;">
@@ -71,6 +78,7 @@ Session::remove('error_message');
                         </tbody>
                     </table>
                 </div><!--Aquí termina el contenido específico del área de bodega -->
+
                 <!-- Comienza el contenido para el área administrativa-->
                 <div class="row">
                     <div class="col-md-3">
@@ -95,7 +103,7 @@ Session::remove('error_message');
                 </div>
                 <!--Aquí termina el contenido específico del área administrativa -->
 
-                <!-- Modal -->
+                <!-- Modal Subir Asistencias -->
                 <div class="modal fade" id="modalSubirAsistencias" tabindex="-1"
                     aria-labelledby="modalSubirAsistenciasLabel" aria-hidden="true">
                     <div class="modal-dialog">
@@ -118,14 +126,33 @@ Session::remove('error_message');
                                     <button type="submit" class="btn btn-success">Subir</button>
                                 </form>
                             </div>
+                        </div>
+                    </div>
+                </div>
 
-                            <?php if (!empty($error_message)): ?>
-                                <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
-                            <?php endif; ?>
+                <!-- Modal Descargar Reporte -->
+                <div class="modal fade" id="modalDescargarReporte" tabindex="-1" aria-labelledby="modalDescargarReporte"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
 
-                            <?php if (!empty($message)): ?>
-                                <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
-                            <?php endif; ?>
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalDescargarReporte">Subir archivo de asistencias
+                                </h5>
+                            </div>
+
+                            <div class="modal-body">
+                                <form action="<?= BASE_URL ?>usuario/pantallaCarga" method="POST"
+                                    enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <label for="archivoAsistencias" class="form-label">Selecciona archivo
+                                            Excel</label>
+                                        <input class="form-control" type="file" id="archivo_dat" name="archivo_dat"
+                                            required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Subir</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>

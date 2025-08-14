@@ -78,7 +78,7 @@
                         <tbody>
                             <?php foreach ($empleados as $empleado): ?>
                                 <tr>
-                                    <form action="<?= BASE_URL ?>usuario/generarReporte" method="post">
+                                    <form action="<?= BASE_URL ?>verempleados/generarReporte" method="post">
                                     <input type="hidden" name="id_empleado" value="<?= htmlspecialchars($empleado['id_empleado']) ?>">
                                     <td><?= htmlspecialchars($empleado['id_empleado']) ?></td>
                                     <td><?= htmlspecialchars($empleado['nombre']) ?></td>
