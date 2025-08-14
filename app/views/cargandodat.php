@@ -11,7 +11,7 @@
 
     <link rel="icon" href="">
 
-    <title>INVENTARIO JOES</title>
+    <title>EPICOMMERCE</title>
 
     <link href="<?= BASE_URL ?>assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= BASE_URL ?>assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
@@ -57,21 +57,20 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            const archivo = "<?= $archivo ?>";
-
-            if (archivo) {
-                fetch("<?= BASE_URL ?>importfile/procesarArchivo?archivo=" + archivo)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.redirect) {
-                            window.location.href = data.redirect;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error:", error);
-                        window.location.href = "<?= BASE_URL ?>importfile";
-                    });
-            }
+            fetch("<?= BASE_URL ?>usuario/subirAsistencias", {
+                method: "POST"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.redirect) {
+                        window.location.href = data.redirect;
+                    }
+                })
+                .catch(err => {
+                    console.error(err);
+                    alert("Hubo un error procesando el archivo.");
+                    window.location.href = "<?= BASE_URL ?>dashboard";
+                });
         });
     </script>
     <script src="<?= BASE_URL ?>assets/js/jquery.min.js"></script>

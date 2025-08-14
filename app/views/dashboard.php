@@ -1,3 +1,11 @@
+<?php
+$message = Session::get('message');
+$error_message = Session::get('error_message');
+
+Session::remove('message');
+Session::remove('error_message');
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -99,18 +107,25 @@
                             </div>
 
                             <div class="modal-body">
-                                <form action="<?= BASE_URL ?>usuario/subirAsistencias" method="POST"
+                                <form action="<?= BASE_URL ?>usuario/pantallaCarga" method="POST"
                                     enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label for="archivoAsistencias" class="form-label">Selecciona archivo
                                             Excel</label>
-                                        <input class="form-control" type="file" id="archivoAsistencias"
-                                            name="archivoAsistencias" accept=".dat" required>
+                                        <input class="form-control" type="file" id="archivo_dat" name="archivo_dat"
+                                            required>
                                     </div>
                                     <button type="submit" class="btn btn-success">Subir</button>
                                 </form>
                             </div>
 
+                            <?php if (!empty($error_message)): ?>
+                                <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
+                            <?php endif; ?>
+
+                            <?php if (!empty($message)): ?>
+                                <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
