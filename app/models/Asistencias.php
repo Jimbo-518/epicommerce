@@ -148,14 +148,13 @@ class Asistencias{
         return true;
     }
 
-    public static function generarExcel()
+    public static function generarExcel($dateInit, $datefin)
     {
         $db = Database::getConnection();
 
-        // --- FECHAS DE REFERENCIA ---
-        $hoy = new DateTime();
-        $fechaInicio = $hoy->sub(new DateInterval('P15D'))->format('Y-m-d'); // 15 días atrás
-        $fechaFin = (new DateTime())->format('Y-m-d');
+        // --- FECHAS DE REFERENCIA --- 
+        $fechaInicio = $dateInit;
+        $fechaFin = $datefin;
 
         $spreadsheet = new Spreadsheet();
 
@@ -262,6 +261,7 @@ class Asistencias{
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
         exit;
+    
     }
 }
 ?>

@@ -57,7 +57,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            fetch("<?= BASE_URL ?>usuario/subirAsistencias", {
+            fetch("<?= BASE_URL ?>dashboard/subirAsistencias", {
                 method: "POST"
             })
                 .then(response => response.json())
