@@ -73,13 +73,38 @@ class Usuario
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    public static function editUser(){
-
-    }
-
-    public static function bajaUser($id)
+    public static function actualizarEmpleado($id, $nombre, $edificio, $area, $vacaciones)
     {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE empleados SET nombre = :nombre, edificio = :edificio, area = :area, vacaciones = :vacaciones WHERE id_empleado = :id");
+        return $stmt->execute([
+            'nombre' => $nombre,
+            'edificio' => $edificio,
+            'area' => $area,
+            'vacaciones' => $vacaciones,
+            'id' => $id
+        ]);
     }
+    public static function eliminarEmpleado($id)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("DELETE FROM empleados WHERE id_empleado = :id");
+        return $stmt->execute(['id' => $id]);
+    }
+
+    public static function listaEdificios()
+    {
+        $db = Database::getConnection();
+        $stmt = $db->query("SELECT DISTINCT edificio FROM empleados ORDER BY edificio ASC");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public static function listaAreas()
+    {
+        $db = Database::getConnection();
+        $stmt = $db->query("SELECT DISTINCT area FROM empleados ORDER BY area ASC");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
 }
 ?>

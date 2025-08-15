@@ -26,22 +26,57 @@ class VerempleadosController extends Controller
             'empleados' => $empleados
         ]);
     }
+
     public function generarReporte()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_empleado'];
-
             $userInfo = Usuario::pushUserID($id);
             if ($userInfo) {
                 Asistencias::generarReporte($userInfo);
             }
         }
     }
-    public function editarUsuario(){
+    public function editarUsuario()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id_empleado'];
+            $nombre = $_POST['nombre'];
+            $edificio = $_POST['edificio'];
+            $area = $_POST['area'];
+            $vacaciones = $_POST['vacaciones'];
 
+            if (Usuario::actualizarEmpleado($id, $nombre, $edificio, $area, $vacaciones)) {
+                header("Location: " . BASE_URL . "verempleados/verempleados");
+                exit();
+            }
+        } else {
+            $id = $_GET['id'];
+            $empleado = Usuario::pushUserID($id);
+            $edificios = Usuario::listaEdificios();
+            $areas = Usuario::listaAreas();
+
+            $this->view('editarEmpleado', [
+                'empleado' => $empleado,
+                'edificios' => $edificios,
+                'areas' => $areas
+            ]);
+        }
     }
 
-    public function bajaUsuario(){
+    public function bajaUsuario()
+    {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = $_POST['id_empleado'];
+            if (Usuario::eliminarEmpleado($id)) {
+                header("Location: " . BASE_URL . "verempleados/verempleados");
+                exit();
+            }
+        } else {
+            $id = $_GET['id'];
+            $empleado = Usuario::pushUserID($id);
+            $this->view('bajaEmpleado', ['empleado' => $empleado]);
+        }
     }
 }
 ?>

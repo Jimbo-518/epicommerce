@@ -8,7 +8,7 @@
 </head>
 <body class="align">
     <div class="grid">
-        <center><h1 style="color: #eee;">EPICOMMERCE</h1></center>
+        <center><h1 style="color: #000000ff;">EPICOMMERCE</h1></center>
 
         <form action="<?= BASE_URL ?>login/autenticar" method="POST" class="form login">
             <div class="form__field">

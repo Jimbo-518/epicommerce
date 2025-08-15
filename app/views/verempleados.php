@@ -8,43 +8,43 @@
     <link href="<?= BASE_URL ?>assets/css/dashboard.css" rel="stylesheet">
 </head>
 
-<style> 
- table {
-      width: 100%;
-      max-width: 900px;
-      margin: 20px auto;
-      border-collapse: collapse;
-      font-size: 16px;
-      text-align: center;
-      background-color: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+<style>
+    table {
+        width: 100%;
+        max-width: 900px;
+        margin: 20px auto;
+        border-collapse: collapse;
+        font-size: 16px;
+        text-align: center;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     }
 
     table th,
     table td {
-      border: 1px solid #dddddd;
-      padding: 12px;
+        border: 1px solid #dddddd;
+        padding: 12px;
     }
 
     table th {
-      background-color: #f4f4f4;
-      font-weight: bold;
-      color: #555;
+        background-color: #f4f4f4;
+        font-weight: bold;
+        color: #555;
     }
 
     table tr:nth-child(even) {
-      background-color: #f9f9f9;
+        background-color: #f9f9f9;
     }
 
     table tr:hover {
-      background-color:rgb(186, 226, 252);
+        background-color: rgb(186, 226, 252);
     }
 
     table caption {
-      margin-bottom: 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: #333;
+        margin-bottom: 10px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #333;
     }
 </style>
 
@@ -78,25 +78,33 @@
                         <tbody>
                             <?php foreach ($empleados as $empleado): ?>
                                 <tr>
-                                    <form action="<?= BASE_URL ?>verempleados/generarReporte" method="post">
-                                    <input type="hidden" name="id_empleado" value="<?= htmlspecialchars($empleado['id_empleado']) ?>">
                                     <td><?= htmlspecialchars($empleado['id_empleado']) ?></td>
                                     <td><?= htmlspecialchars($empleado['nombre']) ?></td>
                                     <td><?= htmlspecialchars($empleado['edificio']) ?></td>
                                     <td><?= htmlspecialchars($empleado['area']) ?></td>
                                     <td><?= htmlspecialchars($empleado['vacaciones']) ?></td>
-                                    <td><button type="isset" class="btn btn-danger">PDF</button></td>
-                                    <td><button class="btn btn-info">EDITAR</button></td>
-                                    <td><button class="btn btn-warning">BAJA</button></td>
-                                    </form>
+                                    <td>
+                                        <form action="<?= BASE_URL ?>verempleados/generarReporte" method="post">
+                                            <input type="hidden" name="id_empleado" value="<?= $empleado['id_empleado'] ?>">
+                                            <button type="submit" class="btn btn-danger">PDF</button>
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <a href="<?= BASE_URL ?>verempleados/editarUsuario?id=<?= $empleado['id_empleado'] ?>"
+                                            class="btn btn-info">Editar</a>
+                                    </td>
+                                    <td>
+                                        <a href="<?= BASE_URL ?>verempleados/bajaUsuario?id=<?= $empleado['id_empleado'] ?>"
+                                            class="btn btn-warning">Baja</a>
+                                    </td>
                                 </tr>
                             <?php endforeach; ?>
                         </tbody>
+
                     </table>
                 <?php else: ?>
                     <p>No hay empleados registrados.</p>
                 <?php endif; ?>
-
             </div>
         </div>
     </div>
