@@ -31,12 +31,17 @@ class VerempleadosController extends Controller
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_empleado'];
+            $fecha_inicio = $_POST['fecha_inicio'];
+            $fecha_fin = $_POST['fecha_fin'];
+
             $userInfo = Usuario::pushUserID($id);
+
             if ($userInfo) {
-                Asistencias::generarReporte($userInfo);
+                Asistencias::generarReporte($userInfo, $fecha_inicio, $fecha_fin);
             }
         }
     }
+
     public function editarUsuario()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -106,5 +106,24 @@ class Usuario
         return $stmt->fetchAll(PDO::FETCH_COLUMN);
     }
 
+    public static function obtenerAsistenciasPorEmpleado($id_empleado, $fecha_inicio, $fecha_fin)
+{
+    $db = Database::getConnection();
+    $stmt = $db->prepare("
+        SELECT fecha, entrada, entrada_comida, salida_comida, salida
+        FROM asistencias
+        WHERE id_empleado = :id_empleado
+          AND fecha BETWEEN :fecha_inicio AND :fecha_fin
+        ORDER BY fecha ASC
+    ");
+    $stmt->execute([
+        'id_empleado' => $id_empleado,
+        'fecha_inicio' => $fecha_inicio,
+        'fecha_fin' => $fecha_fin
+    ]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
 }
 ?>

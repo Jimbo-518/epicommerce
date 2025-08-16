@@ -8,31 +8,45 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Cell\Coordinate;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-class Asistencias{
+class Asistencias
+{
 
-    public static function generarReporte($userInfo)
+    public static function generarReporte($userInfo, $fecha_inicio, $fecha_fin)
     {
-        ob_start();
         $empleado = $userInfo;
+
+        // Conexión a la BD
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+        SELECT fecha, entrada, entrada_comida, salida_comida, salida
+        FROM asistencias
+        WHERE id_empleado = :id_empleado
+          AND fecha BETWEEN :fecha_inicio AND :fecha_fin
+        ORDER BY fecha ASC
+    ");
+        $stmt->execute([
+            'id_empleado' => $empleado['id_empleado'],
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => $fecha_fin
+        ]);
+        $asistencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        ob_start();
         require __DIR__ . '/../views/reportes/empleado.php';
         $html = ob_get_clean();
 
         $options = new Options();
         $options->set('isRemoteEnabled', true);
 
-        // instantiate and use the dompdf class
         $dompdf = new Dompdf($options);
         $dompdf->loadHtml($html);
 
-        // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', 'Portrait');
-
-        // Render the HTML as PDF
         $dompdf->render();
 
-        // Output the generated PDF to Browser
         $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
+
 
     public static function procesarAsistencias($ruta)
     {
@@ -261,7 +275,7 @@ class Asistencias{
         $writer = IOFactory::createWriter($spreadsheet, 'Xls');
         $writer->save('php://output');
         exit;
-    
+
     }
 }
 ?>

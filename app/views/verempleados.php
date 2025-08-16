@@ -86,9 +86,17 @@
                                     <td>
                                         <form action="<?= BASE_URL ?>verempleados/generarReporte" method="post">
                                             <input type="hidden" name="id_empleado" value="<?= $empleado['id_empleado'] ?>">
+
+                                            <label>Desde:</label>
+                                            <input type="date" name="fecha_inicio" required>
+
+                                            <label>Hasta:</label>
+                                            <input type="date" name="fecha_fin" required>
+
                                             <button type="submit" class="btn btn-danger">PDF</button>
                                         </form>
                                     </td>
+
                                     <td>
                                         <a href="<?= BASE_URL ?>verempleados/editarUsuario?id=<?= $empleado['id_empleado'] ?>"
                                             class="btn btn-info">Editar</a>
