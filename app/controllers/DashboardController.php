@@ -15,7 +15,7 @@ class DashboardController extends Controller {
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
-
+        
         error_log("Usuario en sesión: " . ($area ?: 'No definido'));
         error_log("Nombre en sesión: " . ($name ?: 'No definido'));
 

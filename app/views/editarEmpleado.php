@@ -69,22 +69,22 @@
             <br><br>
             <div class="form-container" style="background-color: #292F39;">
                 <h2 class="form-header text-center">Modifique los datos y guarde los cambios</h2>
-                <form method="post" action="<?= BASE_URL ?>verempleados/editarUsuario">
-                    <input type="hidden" name="id_empleado" value="<?= htmlspecialchars($empleado['id_empleado']) ?>">
+                <form action="<?= BASE_URL ?>editarEmpleado/editarUsuario" method="POST">
+                    <input type="hidden" name="id_empleado" value="<?= htmlspecialchars($empleadodata['id_empleado']) ?>">
 
                     <div class="form-group">
                         <label for="nombre">Nombre:</label>
                         <input type="text" id="nombre" name="nombre" class="form-control"
-                               value="<?= htmlspecialchars($empleado['nombre']) ?>" required>
+                               value="<?= htmlspecialchars($empleadodata['nombre']) ?>" required>
                     </div>
 
                     <div class="form-group">
                         <label for="edificio">Edificio:</label>
                         <select name="edificio" id="edificio" class="form-control" required>
                             <option value="">-- Seleccione un edificio --</option>
-                            <?php foreach ($edificios as $edif): ?>
+                            <?php foreach ($edificioslist as $edif): ?>
                                 <option value="<?= htmlspecialchars($edif) ?>"
-                                    <?= ($edif === $empleado['edificio']) ? 'selected' : '' ?>>
+                                    <?= ($edif === $empleadodata['edificio']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($edif) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -95,9 +95,9 @@
                         <label for="area">Área:</label>
                         <select name="area" id="area" class="form-control" required>
                             <option value="">-- Seleccione un área --</option>
-                            <?php foreach ($areas as $ar): ?>
+                            <?php foreach ($areaslist as $ar): ?>
                                 <option value="<?= htmlspecialchars($ar) ?>"
-                                    <?= ($ar === $empleado['area']) ? 'selected' : '' ?>>
+                                    <?= ($ar === $empleadodata['area']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($ar) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -107,7 +107,7 @@
                     <div class="form-group">
                         <label for="vacaciones">Vacaciones:</label>
                         <input type="number" id="vacaciones" name="vacaciones" class="form-control"
-                               value="<?= htmlspecialchars($empleado['vacaciones']) ?>" required>
+                               value="<?= htmlspecialchars($empleadodata['vacaciones']) ?>" required>
                     </div>
 
                     <button type="submit" class="btn btn-custom btn-block">Guardar cambios</button>

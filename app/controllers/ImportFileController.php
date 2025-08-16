@@ -14,8 +14,9 @@ class ImportFileController extends Controller
             exit();
         }
 
-        $rol = Session::get('rol');
+        $area = Session::get('area');
         $name = Session::get('name');
+        $edificio = Session::get('edificio');
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -24,8 +25,9 @@ class ImportFileController extends Controller
         Session::remove('message');
 
         $this->view('importfile', [
-            'rol' => $rol,
+            'area' => $area,
             'name' => $name,
+            'edificio' => $edificio,
             'error_message' => $error_message,
             'message' => $message
         ]);

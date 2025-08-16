@@ -42,33 +42,6 @@ class VerempleadosController extends Controller
         }
     }
 
-    public function editarUsuario()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id_empleado'];
-            $nombre = $_POST['nombre'];
-            $edificio = $_POST['edificio'];
-            $area = $_POST['area'];
-            $vacaciones = $_POST['vacaciones'];
-
-            if (Usuario::actualizarEmpleado($id, $nombre, $edificio, $area, $vacaciones)) {
-                header("Location: " . BASE_URL . "verempleados/verempleados");
-                exit();
-            }
-        } else {
-            $id = $_GET['id'];
-            $empleado = Usuario::pushUserID($id);
-            $edificios = Usuario::listaEdificios();
-            $areas = Usuario::listaAreas();
-
-            $this->view('editarEmpleado', [
-                'empleado' => $empleado,
-                'edificios' => $edificios,
-                'areas' => $areas
-            ]);
-        }
-    }
-
     public function bajaUsuario()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {

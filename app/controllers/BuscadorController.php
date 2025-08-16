@@ -14,15 +14,17 @@ class BuscadorController extends Controller
             exit();
         }
 
-        $rol = Session::get('rol');
+        $area = Session::get('area');
         $name = Session::get('name');
+        $edificio = Session::get('edificio');
 
         // Obtener modelos únicos
         $modelos = Inventario::obtenerModelos();
 
         $this->view('buscador', [
-            'rol' => $rol,
+            'area' => $area,
             'name' => $name,
+            'edificio' => $edificio,
             'modelos' => $modelos,
         ]);
     }
