@@ -84,17 +84,9 @@
                                     <td><?= htmlspecialchars($empleado['area']) ?></td>
                                     <td><?= htmlspecialchars($empleado['vacaciones']) ?></td>
                                     <td>
-                                        <form action="<?= BASE_URL ?>verempleados/generarReporte" method="post">
-                                            <input type="hidden" name="id_empleado" value="<?= $empleado['id_empleado'] ?>">
-
-                                            <label>Desde:</label>
-                                            <input type="date" name="fecha_inicio" required>
-
-                                            <label>Hasta:</label>
-                                            <input type="date" name="fecha_fin" required>
-
-                                            <button type="submit" class="btn btn-danger">PDF</button>
-                                        </form>
+                                        <button type="button" class="btn btn-danger btnAbrirModal" data-toggle="modal"
+                                            data-target="#modalDescargarPDF"
+                                            data-id="<?= $empleado['id_empleado'] ?>">PDF</button>
                                     </td>
 
                                     <td>
@@ -113,9 +105,48 @@
                 <?php else: ?>
                     <p>No hay empleados registrados.</p>
                 <?php endif; ?>
+
+                <!-- Modal Descargar Reporte -->
+                <div class="modal fade" id="modalDescargarPDF" tabindex="-1" aria-labelledby="modalDescargarPDF"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalDescargarPDF">Selecioné las fechas para el Reporte
+                                </h5>
+                            </div>
+
+                            <div class="modal-body">
+                                <form action="<?= BASE_URL ?>verempleados/generarReporte" method="POST"
+                                    enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <input type="hidden" name="id_empleado" id="id_empleado" value="">
+
+                                        <label for="archivoAsistencias" class="form-label">Desde</label>
+                                        <input class="form-control" type="date" id="fecha_inicio" name="fecha_inicio"
+                                            required>
+                                        <label for="archivoAsistencias" class="form-label">Hasta</label>
+                                        <input class="form-control" type="date" id="fecha_fin" name="fecha_fin"
+                                            required>
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Ver</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="<?= BASE_URL ?>assets/js/jquery.min.js.descarga"></script>
+    <script src="<?= BASE_URL ?>assets/js/bootstrap.min.js.descarga"></script>
+    <script>
+        $(document).on("click", ".btnAbrirModal", function () {
+            var id = $(this).data("id");
+            $("#id_empleado").val(id);
+        });
+    </script>
 </body>
 
 </html>

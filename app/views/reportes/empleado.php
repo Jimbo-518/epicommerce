@@ -35,8 +35,8 @@
             <tr>
                 <th>Fecha</th>
                 <th>Entrada</th>
-                <th>Entrada comida</th>
-                <th>Salida comida</th>
+                <th>Salida para comer</th>
+                <th>Entrada de comida</th>
                 <th>Salida</th>
             </tr>
         </thead>
@@ -46,8 +46,8 @@
                     <tr>
                         <td><?= htmlspecialchars($asis['fecha']) ?></td>
                         <td><?= htmlspecialchars($asis['entrada']) ?></td>
-                        <td><?= htmlspecialchars($asis['entrada_comida']) ?></td>
                         <td><?= htmlspecialchars($asis['salida_comida']) ?></td>
+                        <td><?= htmlspecialchars($asis['entrada_comida']) ?></td>
                         <td><?= htmlspecialchars($asis['salida']) ?></td>
                     </tr>
                 <?php endforeach; ?>
