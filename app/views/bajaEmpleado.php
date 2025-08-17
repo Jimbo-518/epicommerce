@@ -79,7 +79,7 @@
                     </p>
 
                     <center>
-                    <form method="post" action="<?= BASE_URL ?>verempleados/bajaUsuario">
+                    <form method="post" action="<?= BASE_URL ?>bajaEmpleado/bajaUsuario">
                         <input type="hidden" name="id_empleado"
                             value="<?= htmlspecialchars($empleado['id_empleado']) ?>">
                         <div class="d-flex justify-content-between">

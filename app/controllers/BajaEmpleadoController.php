@@ -1,11 +1,10 @@
 <?php
 require_once '../app/core/Session.php';
 require_once '../app/models/Usuario.php';
-require_once '../app/models/Asistencias.php';
 
-class VerempleadosController extends Controller
+class BajaEmpleadoController extends Controller
 {
-    public function verempleados()
+    public function index()
     {
         Session::start();
 
@@ -13,31 +12,28 @@ class VerempleadosController extends Controller
         $name = Session::get('name');
         $edificio = Session::get('edificio');
 
+        $id = $_GET['id'];
+        $empleado = Usuario::pushUserID($id);
+
         $error_message = Session::get('error_message');
         Session::remove('error_message');
 
-        $empleados = Usuario::listaempleados();
-
-        $this->view('verempleados', [
+        $this->view('bajaEmpleado', [
             'error_message' => $error_message,
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'empleados' => $empleados
+            'empleado' => $empleado
         ]);
     }
 
-    public function generarReporte()
+    public function bajaUsuario()
     {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id = $_POST['id_empleado'];
-            $fecha_inicio = $_POST['fecha_inicio'];
-            $fecha_fin = $_POST['fecha_fin'];
-
-            $userInfo = Usuario::pushUserID($id);
-
-            if ($userInfo) {
-                Asistencias::generarReporte($userInfo, $fecha_inicio, $fecha_fin);
+            if (Usuario::eliminarEmpleado($id)) {
+                header("Location: " . BASE_URL . "verempleados/verempleados");
+                exit();
             }
         }
     }

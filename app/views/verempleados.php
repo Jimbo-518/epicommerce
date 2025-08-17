@@ -102,7 +102,7 @@
                                             class="btn btn-info">Editar</a>
                                     </td>
                                     <td>
-                                        <a href="<?= BASE_URL ?>verempleados/bajaUsuario?id=<?= $empleado['id_empleado'] ?>"
+                                        <a href="<?= BASE_URL ?>bajaEmpleado?id=<?= $empleado['id_empleado'] ?>"
                                             class="btn btn-warning">Baja</a>
                                     </td>
                                 </tr>
