@@ -3,12 +3,28 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./assets/css/login.css">
+  <link rel="stylesheet" href="<?= BASE_URL ?>/assets/css/login.css">
   <title>INVENTARIO</title>
+
+  <style>
+    :root {
+      --bodyBackgroundColor: url('./assets/img/fondoLogin.jpg');
+    }
+
+    body {
+      background: var(--bodyBackgroundColor) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+    }
+  </style>
+
 </head>
 <body class="align">
     <div class="grid">
-        <center><h1 style="color: #000000ff;">EPICOMMERCE</h1></center>
+      <div class="login-container">
+        <center><h1 style="color: white;">EPICOMMERCE</h1></center>
 
         <form action="<?= BASE_URL ?>login/autenticar" method="POST" class="form login">
             <div class="form__field">
@@ -22,13 +38,14 @@
             </div>
 
             <div class="form__field">
-                <input style="margin-top: 20px; box-shadow: 0px 1px 25px var(--loginSubmitbox-shadow);" type="submit" value="Iniciar sesión">
+                <input style="margin-top: 20px; box-shadow: 0px 0px 0px var(--loginSubmitbox-shadow);" type="submit" value="Iniciar sesión">
             </div>
         </form>
 
         <?php if (!empty($error_message)): ?>
             <div class="error"><?= htmlspecialchars($error_message); ?></div>
         <?php endif; ?>
+        </div>
     </div>
 
     <svg xmlns="http://www.w3.org/2000/svg" class="icons">
