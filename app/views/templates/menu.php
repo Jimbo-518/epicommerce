@@ -32,7 +32,9 @@ $current_page = $_GET['url'] ?? 'dashboard';
             <li class="<?= ($current_page === 'dashboard') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>dashboard">INICIO</a>
             </li>
-            <li>Justificantes</li>
+            <li class="<?= ($current_page === 'justificantes') ? 'active' : '' ?>">
+                <a href="<?= BASE_URL ?>justificantes">Justificantes</a>
+            </li>
             <?php if ($area != 'empleado'): ?>
             <li class="<?= ($current_page === 'usuario/altauser') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>usuario/altauser">Alta de Usuarios</a>
@@ -40,8 +42,9 @@ $current_page = $_GET['url'] ?? 'dashboard';
             <li class="<?= ($current_page === 'verempleados/verempleados') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>verempleados/verempleados">Ver empleados</a>
             </li>
-
-            <li>Ver Justificantes</li>
+            <li class="<?= ($current_page === 'verjustificantes') ? 'active' : '' ?>">
+                <a href="<?= BASE_URL ?>verjustificantes">Ver justificantes</a>
+            </li>
             <?php endif; ?>
         </ul>
     <?php endif; /* Fin de apartado para administración */ ?>
