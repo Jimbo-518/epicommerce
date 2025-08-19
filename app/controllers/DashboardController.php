@@ -12,6 +12,7 @@ class DashboardController extends Controller {
             exit();
         }
 
+        $id_empleado = Session::get('id_empleado');
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
@@ -25,7 +26,8 @@ class DashboardController extends Controller {
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'inventario' => $inventario
+            'inventario' => $inventario,
+            'id_empleado' => $id_empleado
         ]);
     }
 

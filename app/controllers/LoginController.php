@@ -19,6 +19,7 @@ class LoginController extends Controller {
                    
             if ($usuario) {
                 Session::start();
+                Session::set('id_empleado', $usuario['id_empleado']);
                 Session::set('name', $usuario['nombre']);
                 Session::set('edificio', $usuario['edificio']);
                 Session::set('area', $usuario['area']);

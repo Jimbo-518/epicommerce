@@ -3,8 +3,7 @@ $current_page = $_GET['url'] ?? 'dashboard';
 ?>
 
 <div class="col-sm-3 col-md-2 sidebar">
-    <?php /* Inicio de apartado para bodega */ if ($edificio == "cedis"):
-        ; ?>
+    <?php /* Inicio de apartado para bodega */ if ($edificio == "cedis"): ?>
         <ul class="nav nav-sidebar">
             <li class="<?= ($current_page === 'dashboard') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>dashboard">INICIO</a>
@@ -12,7 +11,7 @@ $current_page = $_GET['url'] ?? 'dashboard';
             <li class="<?= ($current_page === 'buscador') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>buscador">Buscador</a>
             </li>
-            <?php if ($area != 'surtidor'): ?>
+            <?php if ($area != 'empleado'): ?>
                 <li class="<?= ($current_page === 'exportfile') ? 'active' : '' ?>">
                     <a href="<?= BASE_URL ?>exportfile">Descargar inventario</a>
                 </li>
@@ -28,13 +27,13 @@ $current_page = $_GET['url'] ?? 'dashboard';
             <?php endif; ?>
         </ul>
     <?php /* Fin de apartado para bodega */ else:
-        ;
         /* Inicio de apartado para Administración */ ?>
-        <ul style="display: <?php echo $activarrol = ($edificio != "cedis") ? "" : "none"; ?>;" class="nav nav-sidebar">
+        <ul class="nav nav-sidebar">
             <li class="<?= ($current_page === 'dashboard') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>dashboard">INICIO</a>
             </li>
-            <?php //if ($rol == 'rh' || $rol == 'contabilidad'): ?>
+            <li>Justificantes</li>
+            <?php if ($area != 'empleado'): ?>
             <li class="<?= ($current_page === 'usuario/altauser') ? 'active' : '' ?>">
                 <a href="<?= BASE_URL ?>usuario/altauser">Alta de Usuarios</a>
             </li>
@@ -42,8 +41,8 @@ $current_page = $_GET['url'] ?? 'dashboard';
                 <a href="<?= BASE_URL ?>verempleados/verempleados">Ver empleados</a>
             </li>
 
-            <li>Justificantes</li>
-            <?php //endif; ?>
+            <li>Ver Justificantes</li>
+            <?php endif; ?>
         </ul>
     <?php endif; /* Fin de apartado para administración */ ?>
 </div>
