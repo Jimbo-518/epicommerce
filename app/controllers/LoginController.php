@@ -15,18 +15,20 @@ class LoginController extends Controller {
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $usuario = Usuario::verificarCredenciales($username, $password);
+            $resultado = Usuario::verificarCredenciales($username, $password);
                    
-            if ($usuario) {
+            if ($resultado) {
+                $usuario = $resultado['usuario'];
+                $info_adicional = $resultado['info_adicional'];
+
                 Session::start();
                 Session::set('id_empleado', $usuario['id_empleado']);
                 Session::set('name', $usuario['nombre']);
-                Session::set('edificio', $usuario['edificio']);
-                Session::set('area', $usuario['area']);
-                
                 Session::set('usuario', $usuario['usuario']);
                 Session::set('vacaciones', $usuario['vacaciones']);
-                Session::set('creador', $usuario['creador']);
+
+                Session::set('edificio', $info_adicional['edificio']);
+                Session::set('area', $info_adicional['departamento']);
                 
                 header("Location: " . BASE_URL . "dashboard");
                 exit();

@@ -17,7 +17,43 @@ class Usuario
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($usuario && password_verify($password, $usuario['password'])) {
-            return $usuario;
+
+            if ($usuario['id_depto_edificio']) {
+
+                $id_depto_edificio = $usuario['id_depto_edificio'];
+
+                $sql_info = "
+        SELECT
+            d.departamento,
+            ed.edificio
+        FROM
+            departamento_edificio de
+        JOIN
+            departamentos d ON de.id_depto = d.id_depto
+        JOIN
+            edificios ed ON de.id_edificio = ed.id_edificio
+        WHERE
+            de.id_depto_edificio = :id;
+    ";
+                $stmt_info = $db->prepare($sql_info);
+                $stmt_info->bindParam(':id', $id_depto_edificio);
+                $stmt_info->execute();
+                $info_adicional = $stmt_info->fetch(PDO::FETCH_ASSOC);
+
+                if ($info_adicional) {
+                    echo "Departamento: " . $info_adicional['departamento'] . "<br>";
+                    echo "Edificio: " . $info_adicional['edificio'] . "<br>";
+                    return [
+                        'usuario' => $usuario,
+                        'info_adicional' => $info_adicional
+                    ];
+                } else {
+                    return false;
+                }
+
+            } else {
+                return false;
+            }
         }
         return false;
     }
@@ -25,13 +61,29 @@ class Usuario
     public static function listaempleados()
     {
         $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM empleados");
-        $stmt->execute();
-        $usuario = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $sql = "
+        SELECT
+            e.*,
+            d.departamento,
+            ed.edificio
+        FROM
+            empleados e
+        JOIN
+            departamento_edificio de ON e.id_depto_edificio = de.id_depto_edificio
+        JOIN
+            departamentos d ON de.id_depto = d.id_depto
+        JOIN
+            edificios ed ON de.id_edificio = ed.id_edificio
+    ";
 
-        if ($usuario) {
-            return $usuario;
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        $empleados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        if ($empleados) {
+            return $empleados;
         }
+
         return false;
     }
 
@@ -107,22 +159,22 @@ class Usuario
     }
 
     public static function obtenerAsistenciasPorEmpleado($id_empleado, $fecha_inicio, $fecha_fin)
-{
-    $db = Database::getConnection();
-    $stmt = $db->prepare("
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
         SELECT fecha, entrada, entrada_comida, salida_comida, salida
         FROM asistencias
         WHERE id_empleado = :id_empleado
           AND fecha BETWEEN :fecha_inicio AND :fecha_fin
         ORDER BY fecha ASC
     ");
-    $stmt->execute([
-        'id_empleado' => $id_empleado,
-        'fecha_inicio' => $fecha_inicio,
-        'fecha_fin' => $fecha_fin
-    ]);
-    return $stmt->fetchAll(PDO::FETCH_ASSOC);
-}
+        $stmt->execute([
+            'id_empleado' => $id_empleado,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => $fecha_fin
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
 
 }

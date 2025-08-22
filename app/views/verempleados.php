@@ -81,7 +81,7 @@
                                     <td><?= htmlspecialchars($empleado['id_empleado']) ?></td>
                                     <td><?= htmlspecialchars($empleado['nombre']) ?></td>
                                     <td><?= htmlspecialchars($empleado['edificio']) ?></td>
-                                    <td><?= htmlspecialchars($empleado['area']) ?></td>
+                                    <td><?= htmlspecialchars($empleado['departamento']) ?></td>
                                     <td><?= htmlspecialchars($empleado['vacaciones']) ?></td>
                                     <td>
                                         <button type="button" class="btn btn-danger btnAbrirModal" data-toggle="modal"
