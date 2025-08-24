@@ -1,51 +1,125 @@
+<?php
+$message = Session::get('message');
+$error_message = Session::get('error_message');
+
+Session::remove('message');
+Session::remove('error_message');
+?>
+
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <link rel="icon" href="">
-
-    <title>INVENTARIO JOES</title>
-
+    <meta charset="UTF-8">
+    <title>Registrar Justificante</title>
     <link href="<?= BASE_URL ?>assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?= BASE_URL ?>assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">
     <link href="<?= BASE_URL ?>assets/css/dashboard.css" rel="stylesheet">
+    <link href="<?= BASE_URL ?>assets/css/altauser.css" rel="stylesheet">
 
-    <script src="<?= BASE_URL ?>assets/js/ie-emulation-modes-warning.js.descarga"></script>
+    <style>
+        .selection {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .selection:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.9);
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #007bff;
+            outline: none;
+            box-shadow: 0 0 5px rgba(0, 123, 255, 0.9);
+        }
+
+        body {
+            padding-top: 70px;
+        }
+    </style>
 </head>
 
 <body>
-
     <?php require_once '../app/views/templates/header.php'; ?>
 
     <div class="container-fluid">
         <div class="row">
+            <?php require_once '../app/views/templates/menu.php'; ?>
 
-            <div class="container-fluid">
-                <div class="row">
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1>Registrar Justificante</h1>
 
-                    <?php require_once '../app/views/templates/menu.php'; ?>
+                <?php if (!empty($message)): ?>
+                    <div class="alert alert-success"><?= htmlspecialchars($message) ?></div>
+                <?php endif; ?>
+                <?php if (!empty($error_message)): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
+                <?php endif; ?>
 
-                    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                        <h1 class="page-header">Justificantes</h1>
-                        
-                        <h3>Apartado de empleados para subir justificantes de faltas</h3>
+                <form action="<?= BASE_URL ?>justificantes/store" method="POST" enctype="multipart/form-data">
+                    <label for="id_empleado">Empleado</label>
+                    <select name="id_empleado" id="id_empleado" class="selection" required>
+                        <option value="">Seleccione un empleado</option>
+                        <?php foreach ($empleados as $empleado): ?>
+                            <option value="<?= $empleado['id_empleado'] ?>"><?= htmlspecialchars($empleado['nombre']) ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
 
-                    </div>
-                </div>
+                    <label for="fecha">Fecha</label>
+                    <input type="date" name="fecha" id="fecha" required>
+
+                    <label for="descripcion">Tipo</label>
+                    <select name="descripcion" id="descripcion" class="selection" required>
+                        <option value="vacaciones">Vacaciones</option>
+                        <option value="permiso">Permiso</option>
+                        <option value="medico">Médico</option>
+                        <option value="home">Home Office</option>
+                    </select>
+
+                    <label for="evidencia">Evidencia</label>
+                    <input type="file" name="evidencia" id="evidencia" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx">
+
+                    <input type="hidden" name="edificio" value="<?= htmlspecialchars($edificio); ?>">
+                    <input type="hidden" name="creator" value="<?= htmlspecialchars($name); ?>">
+
+                    <button type="submit" class="btn btn-success" style="margin-top:15px;">Guardar</button>
+                </form>
             </div>
         </div>
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            <?php if (!empty($message)): ?>
+                alert("<?= htmlspecialchars($message) ?>");
+            <?php endif; ?>
+            <?php if (!empty($error_message)): ?>
+                alert("<?= htmlspecialchars($error_message) ?>");
+            <?php endif; ?>
+        });
+    </script>
+
     <script src="<?= BASE_URL ?>assets/js/jquery.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/bootstrap.min.js"></script>
-    <script src="<?= BASE_URL ?>assets/js/holder.min.js"></script>
-    <script src="<?= BASE_URL ?>assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
+
 </html>

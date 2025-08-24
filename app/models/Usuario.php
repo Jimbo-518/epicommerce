@@ -165,5 +165,38 @@ class Usuario
         $stmt = $db->prepare("DELETE FROM empleados WHERE id_empleado = :id");
         return $stmt->execute(['id' => $id]);
     }
+
+    public static function listaEdificios()
+    {
+        $db = Database::getConnection();
+        $stmt = $db->query("SELECT DISTINCT id_depto_edificio FROM empleados ORDER BY id_depto_edificio ASC");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public static function listaAreas()
+    {
+        $db = Database::getConnection();
+        $stmt = $db->query("SELECT DISTINCT departamento FROM departamentos ORDER BY departamento ASC");
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public static function obtenerAsistenciasPorEmpleado($id_empleado, $fecha_inicio, $fecha_fin)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("
+        SELECT fecha, entrada, entrada_comida, salida_comida, salida
+        FROM asistencias
+        WHERE id_empleado = :id_empleado
+          AND fecha BETWEEN :fecha_inicio AND :fecha_fin
+        ORDER BY fecha ASC
+    ");
+        $stmt->execute([
+            'id_empleado' => $id_empleado,
+            'fecha_inicio' => $fecha_inicio,
+            'fecha_fin' => $fecha_fin
+        ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
 }
 ?>
