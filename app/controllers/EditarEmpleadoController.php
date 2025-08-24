@@ -13,7 +13,9 @@ class EditarEmpleadoController extends Controller
         $edificio = Session::get('edificio');
 
         $id = $_GET['id'];
-        $empleadodata = Usuario::pushUserID($id);
+        $resultado = Usuario::pushUserID($id);
+        $empleadodata = $resultado['usuario'];
+        $info_adicional = $resultado['info_adicional'];
         $edificioslist = Usuario::listaEdificios();
         $areaslist = Usuario::listaAreas();
 
@@ -27,25 +29,37 @@ class EditarEmpleadoController extends Controller
             'edificio' => $edificio,
             'empleadodata' => $empleadodata,
             'edificioslist' => $edificioslist,
-            'areaslist' => $areaslist
+            'areaslist' => $areaslist,
+            'info_adicional' => $info_adicional
         ]);
     }
 
     public function editarUsuario()
-    {
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = $_POST['id_empleado'];
-            $nombre = $_POST['nombre'];
-            $edificio = $_POST['edificio'];
-            $area = $_POST['area'];
-            $vacaciones = $_POST['vacaciones'];
+{
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $id = $_POST['id_empleado'];
+        $nombre = $_POST['nombre'];
+        $edificio_nombre = $_POST['edificio'];
+        $area_nombre = $_POST['area'];
+        $vacaciones = $_POST['vacaciones'];
 
-            $resultado = Usuario::actualizarEmpleado($id, $nombre, $edificio, $area, $vacaciones);
+        // Paso 1: Obtener el ID del departamento y el edificio
+        $id_depto_edificio = Usuario::obtenerIdDeptoEdificio($edificio_nombre, $area_nombre);
+
+        if ($id_depto_edificio) {
+            // Paso 2: Si el ID existe, actualizar el empleado
+            $resultado = Usuario::actualizarEmpleado($id, $nombre, $id_depto_edificio, $vacaciones);
+            
             if ($resultado) {
                 header("Location: " . BASE_URL . "verempleados/verempleados");
                 exit();
+            } else {
+                // Manejar error si la actualización falla
             }
+        } else {
+            // Manejar error si no se encuentra el ID
         }
     }
+}
 }
 ?>

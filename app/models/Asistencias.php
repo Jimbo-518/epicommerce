@@ -10,26 +10,36 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Asistencias
 {
-
     public static function generarReporte($userInfo, $fecha_inicio, $fecha_fin)
     {
         $empleado = $userInfo;
 
-        // Conexión a la BD
         $db = Database::getConnection();
         $stmt = $db->prepare("
-        SELECT fecha, entrada, entrada_comida, salida_comida, salida
-        FROM asistencias
-        WHERE id_empleado = :id_empleado
-          AND fecha BETWEEN :fecha_inicio AND :fecha_fin
-        ORDER BY fecha ASC
-    ");
+    SELECT fecha, hora
+    FROM asistencias
+    WHERE id_empleado = :id_empleado
+      AND fecha BETWEEN :fecha_inicio AND :fecha_fin
+    ORDER BY fecha ASC, hora ASC
+");
+
         $stmt->execute([
             'id_empleado' => $empleado['id_empleado'],
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin
         ]);
         $asistencias = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Reorganizar: fecha => [horas...]
+        $asistenciasPorDia = [];
+        foreach ($asistencias as $row) {
+            $fecha = $row['fecha'];
+            if (!isset($asistenciasPorDia[$fecha])) {
+                $asistenciasPorDia[$fecha] = [];
+            }
+            $asistenciasPorDia[$fecha][] = $row['hora'];
+        }
+        $vacaciones = self::calcularVacaciones($empleado['fecha_ingreso']);
 
         ob_start();
         require __DIR__ . '/../views/reportes/empleado.php';
@@ -47,6 +57,40 @@ class Asistencias
         $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
 
+    public static function calcularVacaciones($fecha_ingreso){
+        try {
+        // Establecer la zona horaria para evitar advertencias
+        date_default_timezone_set('America/Mexico_City');
+        
+        // Crear objetos DateTime para la fecha de ingreso y la fecha actual
+        $start = new DateTime($fecha_ingreso);
+        $end = new DateTime();
+        
+        // Calcular la diferencia entre las dos fechas
+        $interval = $start->diff($end);
+        
+        // Obtener los años de servicio
+        $yearsOfService = $interval->y;
+
+        if ($yearsOfService < 1) {
+            $vacationDays = "Aún no tienes derecho a vacaciones. Debes completar 1 año";
+            return $vacationDays;
+        } elseif ($yearsOfService >= 1 && $yearsOfService <= 5) {
+            // 12 días base + 2 días por cada año adicional hasta el 5to año
+            $vacationDays = 12 + ($yearsOfService - 1) * 2;
+            return $vacationDays;
+        } else {
+            $vacationDays = 20;
+            $additionalYears = $yearsOfService - 5;
+            $additionalBlocks = floor($additionalYears / 5);
+            $vacationDays += $additionalBlocks * 2;
+            return $vacationDays;
+        }
+    } catch (Exception $e) {
+        return "Error: Formato de fecha de ingreso inválido. Por favor, usa el formato YYYY-MM-DD.";
+    }
+
+    }
 
     public static function procesarAsistencias($ruta)
     {

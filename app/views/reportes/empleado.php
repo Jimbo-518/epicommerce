@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Reporte de Empleado</title>
     <link href="<?= BASE_URL ?>assets/css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 <body>
     <div class="row">
         <div class="col-xs-6">
@@ -24,8 +26,16 @@
             <td><?= htmlspecialchars($empleado['nombre']) ?></td>
         </tr>
         <tr>
-            <th>Vacaciones restantes</th>
+            <th>Fecha de Ingreso</th>
+            <td><?= htmlspecialchars($empleado['fecha_ingreso']) ?></td>
+        </tr>
+        <tr>
+            <th>Vacaciones tomadas</th>
             <td><?= htmlspecialchars($empleado['vacaciones']) ?></td>
+        </tr>
+        <tr>
+            <th>Vacaciones restantes</th>
+            <td><?= htmlspecialchars($vacaciones - $empleado['vacaciones']) ?></td>
         </tr>
     </table>
 
@@ -34,29 +44,26 @@
         <thead>
             <tr>
                 <th>Fecha</th>
-                <th>Entrada</th>
-                <th>Salida para comer</th>
-                <th>Entrada de comida</th>
-                <th>Salida</th>
+                <th>Registros</th>
             </tr>
         </thead>
         <tbody>
             <?php if (!empty($asistencias)): ?>
-                <?php foreach ($asistencias as $asis): ?>
+                <?php foreach ($asistenciasPorDia as $fecha => $horas): ?>
                     <tr>
-                        <td><?= htmlspecialchars($asis['fecha']) ?></td>
-                        <td><?= htmlspecialchars($asis['entrada']) ?></td>
-                        <td><?= htmlspecialchars($asis['salida_comida']) ?></td>
-                        <td><?= htmlspecialchars($asis['entrada_comida']) ?></td>
-                        <td><?= htmlspecialchars($asis['salida']) ?></td>
+                        <td><?= htmlspecialchars($fecha) ?></td>
+                        <td>
+                            <?= implode(" | ", $horas) ?>
+                        </td>
                     </tr>
                 <?php endforeach; ?>
             <?php else: ?>
                 <tr>
-                    <td colspan="5">No hay registros en este rango de fechas.</td>
+                    <td colspan="2">No hay registros en este rango de fechas.</td>
                 </tr>
             <?php endif; ?>
         </tbody>
     </table>
 </body>
+
 </html>

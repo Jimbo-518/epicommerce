@@ -84,7 +84,7 @@
                             <option value="">-- Seleccione un edificio --</option>
                             <?php foreach ($edificioslist as $edif): ?>
                                 <option value="<?= htmlspecialchars($edif) ?>"
-                                    <?= ($edif === $empleadodata['edificio']) ? 'selected' : '' ?>>
+                                    <?= ($edif === $info_adicional['edificio']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($edif) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -97,7 +97,7 @@
                             <option value="">-- Seleccione un área --</option>
                             <?php foreach ($areaslist as $ar): ?>
                                 <option value="<?= htmlspecialchars($ar) ?>"
-                                    <?= ($ar === $empleadodata['area']) ? 'selected' : '' ?>>
+                                    <?= ($ar === $info_adicional['departamento']) ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($ar) ?>
                                 </option>
                             <?php endforeach; ?>

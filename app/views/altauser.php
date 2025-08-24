@@ -8,113 +8,122 @@ Session::remove('error_message');
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Alta de Usuario</title>
     <link href="<?= BASE_URL ?>assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= BASE_URL ?>assets/css/dashboard.css" rel="stylesheet">
-    <link href="<?= BASE_URL ?>assets/css/altauser.css" rel="stylesheet">
-
-    <style>
-        .selection {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: white;
-    cursor: pointer;
-}
-
-.selection:focus{
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.9);
-}
-
-input {
-    width: 100%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-  }
-
-  input:focus{
-    border-color: #007bff;
-    outline: none;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.9);
-  }
-    </style>
 </head>
+
 <body>
 
-<?php require_once '../app/views/templates/header.php'; ?>
+    <?php require_once '../app/views/templates/header.php'; ?>
 
-<div class="containercontainer-fluid">
-    <div class="row">
+    <div class="containercontainer-fluid">
+        <div class="row">
 
-    <?php require_once '../app/views/templates/menu.php'; ?>
-    
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-    <h1>Alta de nuevo Usuario</h1>
+            <?php require_once '../app/views/templates/menu.php'; ?>
 
-    <?php if (!empty($error_message)): ?>
-        <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
-    <?php endif; ?>
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1>Alta de nuevo Usuario</h1>
+                <hr>
 
-    <form method="POST" action="<?= BASE_URL ?>usuario/registrar">
-        <label for="name">Nombre completo del empleado</label>
-        <input type="text" id="name" name="name" required>
+                <?php if (!empty($error_message)): ?>
+                    <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
+                <?php endif; ?>
 
-        <label for="user">Usuario a usar</label>
-        <input type="text" id="user" name="user" required>
+                <form method="POST" action="<?= BASE_URL ?>usuario/registrar">
 
-        <label for="psswrd">Contraseña</label>
-        <input class="" type="password" id="psswrd" name="psswrd" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="id" class="form-label">ID en el Checador</label>
+                            <input class="form-control form-group" type="number" id="id" name="id" required>
+                        </div>
 
-        <label for="rol">Rol del empleado</label>
-        <select class="selection" id="area" name="area">
-            <option disabled selected value="">-- Escoja un rol --</option>
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "" : "none"; ?>;" value="surtidor">Empleado</option>
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "" : "none"; ?>;" value="administrador">Administrador</option>
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Nombre completo del empleado</label>
+                            <input class="form-control form-group" type="text" id="name" name="name" required>
+                        </div>
+                    </div>
 
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="gestor">Gestor</option>
-            
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="rh">RH</option>
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="contabilidad">Contabilidad</option>
-            <option style="display: <?php echo $activarrol = ($edificio == "cedis")? "none" : ""; ?>;" value="empleado">Empleado</option>
-        </select>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label for="user" class="form-label">Usuario a usar</label>
+                            <input class="form-control form-group" type="text" id="user" name="user" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="psswrd" class="form-label">Contraseña</label>
+                            <input class="form-control form-group" type="password" id="psswrd" name="psswrd"
+                                required>
+                        </div>
+                    </div>
 
-        <label for="id">ID en el Checador</label>
-        <input type="number" id="id" name="id" required>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label" for="edificio">Edificio:</label>
+                            <select name="edificio" id="edificio" class="form-control form-group" required>
+                                <option value="">-- Seleccione un edificio --</option>
+                                <?php foreach ($edificioslist as $edif): ?>
+                                    <option value="<?= htmlspecialchars($edif) ?>">
+                                        <?= htmlspecialchars($edif) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
 
-        <label for="vacaciones">Días de vacaciones</label>
-        <input type="number" id="vacaciones" name="vacaciones" required>
+                        <div class="col-md-6">
+                            <label class="form-label" for="area">Área o departamento:</label>
+                            <select name="area" id="area" class="form-control form-group" required>
+                                <option value="">-- Seleccione un área --</option>
+                                <?php foreach ($areaslist as $ar): ?>
+                                    <option value="<?= htmlspecialchars($ar) ?>">
+                                        <?= htmlspecialchars($ar) ?>
+                                    </option>
+                                <?php endforeach; ?>
+                            </select>
+                        </div>
+                    </div>
 
-        <input type="hidden" id="edificio" name="edificio" value="<?= htmlspecialchars($edificio); ?>">
-        <input type="hidden" id="creator" name="creator" value="<?= htmlspecialchars($name); ?>">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label for="vacaciones" class="form-label">Días de vacaciones tomados:</label>
+                            <input class="form-control form-group" type="number" id="vacaciones" name="vacaciones"
+                                required>
+                        </div>
 
-        <button type="submit">AGREGAR</button>
-    </form>
+                        <div class="col-md-6">
+                            <label for="fecha_ingreso" class="form-label">Fecha de ingreso:</label>
+                            <input class="form-control form-group" type="date" id="fecha_ingreso" name="fecha_ingreso"
+                                required>
+                        </div>
+                    </div>
+                                    <br>
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <button class="btn btn-primary form-control" type="submit">AGREGAR</button>
+                        </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-    </div>
-</div>
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-    <?php if (!empty($message)) : ?>
-        alert("<?= htmlspecialchars($message) ?>");
-    <?php endif; ?>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            <?php if (!empty($message)): ?>
+                alert("<?= htmlspecialchars($message) ?>");
+            <?php endif; ?>
 
-    <?php if (!empty($error_message)) : ?>
-        alert("<?= htmlspecialchars($error_message) ?>");
-    <?php endif; ?>
-});
-</script>
+            <?php if (!empty($error_message)): ?>
+                alert("<?= htmlspecialchars($error_message) ?>");
+            <?php endif; ?>
+        });
+    </script>
 
-<script src="<?= BASE_URL ?>assets/js/jquery.min.js"></script>
-<script src="<?= BASE_URL ?>assets/js/bootstrap.min.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/jquery.min.js"></script>
+    <script src="<?= BASE_URL ?>assets/js/bootstrap.min.js"></script>
 </body>
+
 </html>

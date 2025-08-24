@@ -12,12 +12,8 @@ class UsuarioController extends Controller
         $name = Session::get('name');
         $edificio = Session::get('edificio');
 
-        /*
-        if ($rol !== 'rh') {
-            header("Location: " . BASE_URL . "dashboard");
-            exit();
-        }
-        */
+        $edificioslist = Usuario::listaEdificios();
+        $areaslist = Usuario::listaAreas();
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -26,7 +22,9 @@ class UsuarioController extends Controller
             'error_message' => $error_message,
             'area' => $area,
             'name' => $name,
-            'edificio' => $edificio
+            'edificio' => $edificio,
+            'edificioslist' => $edificioslist,
+            'areaslist' => $areaslist
         ]);
     }
 
@@ -39,12 +37,17 @@ class UsuarioController extends Controller
             $nombre = $_POST['name'];
             $usuario = $_POST['user'];
             $password = password_hash($_POST['psswrd'], PASSWORD_BCRYPT);
+
+            //datos para id_depto_edificio
             $edificio = $_POST['edificio'];
             $area = $_POST['area'];
-            $vacaciones = $_POST['vacaciones'];
-            $creador = Session::get('name');
 
-            $resultado = Usuario::registrar($id, $nombre, $edificio, $area, $vacaciones, $usuario, $password, $creador);
+            $vacaciones = $_POST['vacaciones'];
+            $fecha_ingreso = $_POST['fecha_ingreso'];
+
+            $id_depto_edificio = Usuario::obtenerIdDeptoEdificio($edificio, $area);
+
+            $resultado = Usuario::registrar($id, $nombre, $id_depto_edificio, $usuario, $password, $vacaciones, $fecha_ingreso);
 
             if ($resultado) {
                 Session::set('message', "Usuario agregado correctamente");

@@ -13,7 +13,9 @@ class BajaEmpleadoController extends Controller
         $edificio = Session::get('edificio');
 
         $id = $_GET['id'];
-        $empleado = Usuario::pushUserID($id);
+        $resultado = Usuario::pushUserID($id);
+        $empleadodata = $resultado['usuario'];
+        $info_adicional = $resultado['info_adicional'];
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -23,7 +25,8 @@ class BajaEmpleadoController extends Controller
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'empleado' => $empleado
+            'empleado' => $empleadodata,
+            'info_adicional' => $info_adicional
         ]);
     }
 

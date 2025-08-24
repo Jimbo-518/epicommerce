@@ -78,6 +78,7 @@
                         <strong><?= htmlspecialchars($empleado['nombre']) ?></strong>?
                     </p>
 
+                    
                     <center>
                     <form method="post" action="<?= BASE_URL ?>bajaEmpleado/bajaUsuario">
                         <input type="hidden" name="id_empleado"
