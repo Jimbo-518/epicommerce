@@ -34,10 +34,12 @@ class VerempleadosController extends Controller
             $fecha_inicio = $_POST['fecha_inicio'];
             $fecha_fin = $_POST['fecha_fin'];
 
-            $userInfo = Usuario::pushUserID($id);
+            $resultado = Usuario::pushUserID($id);
+            $userInfo = $resultado['usuario'];
+            $info_adicional = $resultado['info_adicional'];
 
             if ($userInfo) {
-                Asistencias::generarReporte($userInfo, $fecha_inicio, $fecha_fin);
+                Asistencias::generarReporte($userInfo, $info_adicional, $fecha_inicio, $fecha_fin);
             }
         }
     }

@@ -41,9 +41,10 @@ class HelpController extends Controller
             $password = $_POST['psswrd'] ?? '';
             $name = Session::get('name');
 
-            $usuario = Usuario::obtenerUsuarioPorNombre($username);
+            $resultado = Usuario::verificarCredenciales($username, $password);
+            $usuario = $resultado['usuario'];
 
-            if ($usuario && password_verify($password, $usuario['Password'])) {
+            if ($usuario && password_verify($password, $usuario['password'])) {
                 if ($usuario && $usuario['Rol'] === 'gestor' && password_verify($password, $usuario['Password'])) {
                     Inventario::vaciarBaseDeDatos();
                     Movimientos::deleteBD($name);
@@ -67,9 +68,10 @@ class HelpController extends Controller
             $marbete = $_POST['mar'] ?? '';
             $name = Session::get('name');
 
-            $usuario = Usuario::obtenerUsuarioPorNombre($username);
+            $resultado = Usuario::verificarCredenciales($username, $password);
+            $usuario = $resultado['usuario'];
 
-            if ($usuario && password_verify($password, $usuario['Password'])) {
+            if ($usuario && password_verify($password, $usuario['password'])) {
                 if ($usuario && $usuario['Rol'] === 'gestor' && password_verify($password, $usuario['Password'])) {
                     Inventario::devolverPrenda($upc, $marbete);
                     Movimientos::devPrenda($name, $marbete, $upc);
@@ -97,11 +99,12 @@ class HelpController extends Controller
             $name = Session::get('name');
             $cantidadDESC = 1;
 
-            $usuario = Usuario::obtenerUsuarioPorNombre($username);
+            $resultado = Usuario::verificarCredenciales($username, $password);
+            $usuario = $resultado['usuario'];
 
             $inventario = new Inventario();
 
-            if ($usuario && password_verify($password, $usuario['Password'])) {
+            if ($usuario && password_verify($password, $usuario['password'])) {
                 if ($usuario && $usuario['Rol'] === 'gestor' && password_verify($password, $usuario['Password'])) {
                     $resultado = $inventario->descontarPrenda($marbete, $upc, $cantidadDESC);
                     Inventario::devolverPrenda($upcC, $marbeteC);

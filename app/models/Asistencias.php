@@ -10,7 +10,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Asistencias
 {
-    public static function generarReporte($userInfo, $fecha_inicio, $fecha_fin)
+    public static function generarReporte($userInfo, $info_adicional, $fecha_inicio, $fecha_fin)
     {
         $empleado = $userInfo;
 
@@ -57,38 +57,39 @@ class Asistencias
         $dompdf->stream('empleado_' . $empleado['id_empleado'] . '.pdf', ['Attachment' => false]);
     }
 
-    public static function calcularVacaciones($fecha_ingreso){
+    public static function calcularVacaciones($fecha_ingreso)
+    {
         try {
-        // Establecer la zona horaria para evitar advertencias
-        date_default_timezone_set('America/Mexico_City');
-        
-        // Crear objetos DateTime para la fecha de ingreso y la fecha actual
-        $start = new DateTime($fecha_ingreso);
-        $end = new DateTime();
-        
-        // Calcular la diferencia entre las dos fechas
-        $interval = $start->diff($end);
-        
-        // Obtener los años de servicio
-        $yearsOfService = $interval->y;
+            // Establecer la zona horaria para evitar advertencias
+            date_default_timezone_set('America/Mexico_City');
 
-        if ($yearsOfService < 1) {
-            $vacationDays = "Aún no tienes derecho a vacaciones. Debes completar 1 año";
-            return $vacationDays;
-        } elseif ($yearsOfService >= 1 && $yearsOfService <= 5) {
-            // 12 días base + 2 días por cada año adicional hasta el 5to año
-            $vacationDays = 12 + ($yearsOfService - 1) * 2;
-            return $vacationDays;
-        } else {
-            $vacationDays = 20;
-            $additionalYears = $yearsOfService - 5;
-            $additionalBlocks = floor($additionalYears / 5);
-            $vacationDays += $additionalBlocks * 2;
-            return $vacationDays;
+            // Crear objetos DateTime para la fecha de ingreso y la fecha actual
+            $start = new DateTime($fecha_ingreso);
+            $end = new DateTime();
+
+            // Calcular la diferencia entre las dos fechas
+            $interval = $start->diff($end);
+
+            // Obtener los años de servicio
+            $yearsOfService = $interval->y;
+
+            if ($yearsOfService < 1) {
+                $vacationDays = "Aún no tienes derecho a vacaciones. Debes completar 1 año";
+                return $vacationDays;
+            } elseif ($yearsOfService >= 1 && $yearsOfService <= 5) {
+                // 12 días base + 2 días por cada año adicional hasta el 5to año
+                $vacationDays = 12 + ($yearsOfService - 1) * 2;
+                return $vacationDays;
+            } else {
+                $vacationDays = 20;
+                $additionalYears = $yearsOfService - 5;
+                $additionalBlocks = floor($additionalYears / 5);
+                $vacationDays += $additionalBlocks * 2;
+                return $vacationDays;
+            }
+        } catch (Exception $e) {
+            return "Error: Formato de fecha de ingreso inválido. Por favor, usa el formato YYYY-MM-DD.";
         }
-    } catch (Exception $e) {
-        return "Error: Formato de fecha de ingreso inválido. Por favor, usa el formato YYYY-MM-DD.";
-    }
 
     }
 
@@ -99,112 +100,65 @@ class Asistencias
             return false;
         }
 
-        $asistencias = [];
-
         // Leemos el archivo .dat
         $handle = fopen($ruta, "r");
-        if (!$handle)
+        if (!$handle) {
             return false;
+        }
+
+        $db = Database::getConnection();
+        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
         while (($linea = fgets($handle)) !== false) {
             $linea = trim($linea);
-            if ($linea === '')
+            if ($linea === '') {
                 continue;
+            }
 
+            // separar por espacios o tabs
             $cols = preg_split('/\s+/', $linea);
 
             $id_empleado = $cols[0] ?? '';
             $fecha = $cols[1] ?? '';
             $hora = $cols[2] ?? '';
 
-            if (!$id_empleado || !$fecha || !$hora)
+            if (!$id_empleado || !$fecha || !$hora) {
                 continue;
-
-            // Agrupar por empleado y fecha
-            $asistencias[$id_empleado][$fecha][] = $hora;
-        }
-        fclose($handle);
-
-        $db = Database::getConnection();
-        $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-        // Procesar registros
-        foreach ($asistencias as $id_empleado => $dias) {
-            foreach ($dias as $fecha => $horas) {
-                sort($horas);
-
-                // Filtrar duplicados (< 1 min de diferencia)
-                $filtradas = [];
-                $ultima_hora = null;
-                foreach ($horas as $hora) {
-                    if ($ultima_hora) {
-                        $diff = abs(strtotime("$fecha $hora") - strtotime("$fecha $ultima_hora"));
-                        if ($diff < 60)
-                            continue;
-                    }
-                    $filtradas[] = $hora;
-                    $ultima_hora = $hora;
-                }
-
-                // Asignar tiempos
-                $entrada = $filtradas[0] ?? null;
-                $salida_comida = $filtradas[1] ?? null;
-                $entrada_comida = $filtradas[2] ?? null;
-                $salida = $filtradas[3] ?? null;
-
-                // Calcular alerta
-                $alerta = 0;
-                $dia_semana = date('N', strtotime($fecha)); // 1 = Lunes, 5 = Viernes
-
-                if ($dia_semana == 5) {
-                    // Viernes: solo se esperan 2 registros (entrada y salida)
-                    if (count($filtradas) < 2) {
-                        $alerta = 1;
-                    }
-                } else {
-                    // Otros días: se esperan 4 registros (entrada, salida comida, entrada comida, salida)
-                    if (count($filtradas) < 4) {
-                        $alerta = 1;
-                    } elseif ($salida_comida && $entrada_comida) {
-                        $diff_comida = abs(strtotime("$fecha $entrada_comida") - strtotime("$fecha $salida_comida"));
-                        if ($diff_comida > 3600) { // más de 1 hora
-                            $alerta = 1;
-                        }
-                    }
-                }
-
-                // Insertar en la BD evitando duplicados
-                $stmt = $db->prepare("
-                SELECT COUNT(*) FROM asistencias
-                WHERE id_empleado = :id_empleado AND fecha = :fecha
-            ");
-                $stmt->execute([
-                    ':id_empleado' => $id_empleado,
-                    ':fecha' => $fecha
-                ]);
-                if ($stmt->fetchColumn() > 0) {
-                    // Ya existe, por lo tanto: saltar
-                    continue;
-                }
-
-                $stmt = $db->prepare("
-                INSERT INTO asistencias (id_empleado, fecha, entrada, salida_comida, entrada_comida, salida, alerta)
-                VALUES (:id_empleado, :fecha, :entrada, :salida_comida, :entrada_comida, :salida, :alerta)
-            ");
-                $stmt->execute([
-                    ':id_empleado' => $id_empleado,
-                    ':fecha' => $fecha,
-                    ':entrada' => $entrada,
-                    ':salida_comida' => $salida_comida,
-                    ':entrada_comida' => $entrada_comida,
-                    ':salida' => $salida,
-                    ':alerta' => $alerta
-                ]);
             }
+
+            // Evitar duplicados exactos (id_empleado + fecha + hora)
+            $stmt = $db->prepare("
+            SELECT COUNT(*) FROM asistencias
+            WHERE id_empleado = :id_empleado 
+              AND fecha = :fecha 
+              AND hora = :hora
+        ");
+            $stmt->execute([
+                ':id_empleado' => $id_empleado,
+                ':fecha' => $fecha,
+                ':hora' => $hora
+            ]);
+
+            if ($stmt->fetchColumn() > 0) {
+                continue; // ya existe, saltamos
+            }
+
+            // Insertar registro
+            $stmt = $db->prepare("
+            INSERT INTO asistencias (id_empleado, fecha, hora)
+            VALUES (:id_empleado, :fecha, :hora)
+        ");
+            $stmt->execute([
+                ':id_empleado' => $id_empleado,
+                ':fecha' => $fecha,
+                ':hora' => $hora
+            ]);
         }
 
+        fclose($handle);
         return true;
     }
+
 
     public static function generarExcel($dateInit, $datefin)
     {

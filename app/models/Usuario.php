@@ -100,16 +100,6 @@ class Usuario
         ]);
     }
 
-    public static function obtenerUsuarioPorNombre($username)
-    {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM empleados WHERE usuario = :Usuario LIMIT 1");
-        $stmt->bindParam(':Usuario', $username);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
     public static function pushUserID($id)
     {
         $db = Database::getConnection();
