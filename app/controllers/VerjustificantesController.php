@@ -1,7 +1,6 @@
 <?php
 require_once '../app/core/Session.php';
-require_once '../app/models/Inventario.php';
-require_once '../app/models/Movimientos.php';
+require_once '../app/models/Justificante.php';
 
 class VerjustificantesController extends Controller
 {
@@ -18,10 +17,13 @@ class VerjustificantesController extends Controller
         $name = Session::get('name');
         $edificio = Session::get('edificio');
 
+        $justificantes = Justificante::listarTodos();
+
         $this->view('verjustificantes', [
             'area' => $area,
             'name' => $name,
-            'edificio' => $edificio
+            'edificio' => $edificio,
+            'justificantes' => $justificantes
         ]);
     }
 }
