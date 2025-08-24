@@ -8,8 +8,8 @@ class Edificios
     public static function listaEdificios()
     {
         $db = Database::getConnection();
-        $stmt = $db->query("SELECT DISTINCT edificio FROM edificios ORDER BY edificio ASC");
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $stmt = $db->query("SELECT * FROM edificios");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function obtenerIdDeptoEdificio($edificio_nombre, $area_nombre)
@@ -37,6 +37,27 @@ class Edificios
         $resultado = $stmt->fetch(PDO::FETCH_ASSOC);
 
         return $resultado ? $resultado['id_depto_edificio'] : null;
+    }
+
+    public static function obtenerRelacionesDeptoEdificio()
+    {
+        $db = Database::getConnection();
+        $sql = "
+        SELECT
+            de.id_depto_edificio,
+            d.departamento,
+            ed.edificio
+        FROM
+            departamento_edificio de
+        JOIN
+            departamentos d ON de.id_depto = d.id_depto
+        JOIN
+            edificios ed ON de.id_edificio = ed.id_edificio;
+    ";
+
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>

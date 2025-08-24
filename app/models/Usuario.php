@@ -166,20 +166,6 @@ class Usuario
         return $stmt->execute(['id' => $id]);
     }
 
-    public static function listaEdificios()
-    {
-        $db = Database::getConnection();
-        $stmt = $db->query("SELECT DISTINCT id_depto_edificio FROM empleados ORDER BY id_depto_edificio ASC");
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-
-    public static function listaAreas()
-    {
-        $db = Database::getConnection();
-        $stmt = $db->query("SELECT DISTINCT departamento FROM departamentos ORDER BY departamento ASC");
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
-    }
-
     public static function obtenerAsistenciasPorEmpleado($id_empleado, $fecha_inicio, $fecha_fin)
     {
         $db = Database::getConnection();

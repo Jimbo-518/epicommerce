@@ -65,8 +65,8 @@ Session::remove('error_message');
                             <select name="edificio" id="edificio" class="form-control form-group" required>
                                 <option value="">-- Seleccione un edificio --</option>
                                 <?php foreach ($edificioslist as $edif): ?>
-                                    <option value="<?= htmlspecialchars($edif) ?>">
-                                        <?= htmlspecialchars($edif) ?>
+                                    <option value="<?= htmlspecialchars($edif['edificio']) ?>">
+                                        <?= htmlspecialchars($edif['edificio']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -77,8 +77,8 @@ Session::remove('error_message');
                             <select name="area" id="area" class="form-control form-group" required>
                                 <option value="">-- Seleccione un área --</option>
                                 <?php foreach ($areaslist as $ar): ?>
-                                    <option value="<?= htmlspecialchars($ar) ?>">
-                                        <?= htmlspecialchars($ar) ?>
+                                    <option value="<?= htmlspecialchars($ar['departamento']) ?>">
+                                        <?= htmlspecialchars($ar['departamento']) ?>
                                     </option>
                                 <?php endforeach; ?>
                             </select>
@@ -94,7 +94,7 @@ Session::remove('error_message');
 
                         <div class="col-md-6">
                             <label for="fecha_ingreso" class="form-label">Fecha de ingreso:</label>
-                            <input class="form-control form-group" type="date" id="fecha_ingreso" name="fecha_ingreso"
+                            <input class="form-control form-group" type="date" id="fecha_ingreso" name="['edificio']"
                                 required>
                         </div>
                     </div>

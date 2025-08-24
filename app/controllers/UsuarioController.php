@@ -47,7 +47,7 @@ class UsuarioController extends Controller
             $vacaciones = $_POST['vacaciones'];
             $fecha_ingreso = $_POST['fecha_ingreso'];
 
-            $id_depto_edificio = Usuario::obtenerIdDeptoEdificio($edificio, $area);
+            $id_depto_edificio = Edificios::obtenerIdDeptoEdificio($edificio, $area);
 
             $resultado = Usuario::registrar($id, $nombre, $id_depto_edificio, $usuario, $password, $vacaciones, $fecha_ingreso);
 

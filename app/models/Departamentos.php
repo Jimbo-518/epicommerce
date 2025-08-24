@@ -7,8 +7,8 @@ class Departamentos
     public static function listaAreas()
     {
         $db = Database::getConnection();
-        $stmt = $db->query("SELECT DISTINCT departamento FROM departamentos ORDER BY departamento ASC");
-        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+        $stmt = $db->query("SELECT * FROM departamentos");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 }
 ?>
