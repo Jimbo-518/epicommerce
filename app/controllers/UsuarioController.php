@@ -1,6 +1,8 @@
 <?php
 require_once '../app/core/Session.php';
 require_once '../app/models/Usuario.php';
+require_once '../app/models/Edificios.php';
+require_once '../app/models/Departamentos.php';
 
 class UsuarioController extends Controller
 {
@@ -12,8 +14,8 @@ class UsuarioController extends Controller
         $name = Session::get('name');
         $edificio = Session::get('edificio');
 
-        $edificioslist = Usuario::listaEdificios();
-        $areaslist = Usuario::listaAreas();
+        $edificioslist = Edificios::listaEdificios();
+        $areaslist = Departamentos::listaAreas();
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');

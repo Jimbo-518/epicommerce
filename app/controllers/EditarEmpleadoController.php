@@ -1,6 +1,8 @@
 <?php
 require_once '../app/core/Session.php';
 require_once '../app/models/Usuario.php';
+require_once '../app/models/Edificios.php';
+require_once '../app/models/Departamentos.php';
 
 class EditarEmpleadoController extends Controller
 {
@@ -16,8 +18,8 @@ class EditarEmpleadoController extends Controller
         $resultado = Usuario::pushUserID($id);
         $empleadodata = $resultado['usuario'];
         $info_adicional = $resultado['info_adicional'];
-        $edificioslist = Usuario::listaEdificios();
-        $areaslist = Usuario::listaAreas();
+        $edificioslist = Edificios::listaEdificios();
+        $areaslist = Departamentos::listaAreas();
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
