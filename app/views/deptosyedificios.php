@@ -97,8 +97,10 @@
                                                     <td><?= htmlspecialchars($edif['ubicacion']) ?></td>
                                                     <td>
                                                         <form action="deptosyedificios/eliminarEdificio" method="POST"></form>
-                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($edif['id_edificio']) ?>">
-                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <input type="hidden" name="id_depto"
+                                                            value="<?= htmlspecialchars($edif['id_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit"
+                                                            class="btn btn-danger">Eliminar</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -143,15 +145,19 @@
                                                 <tr>
                                                     <td><?= htmlspecialchars($ar['departamento']) ?></td>
                                                     <td>
-                                                        <form action="" method="post"></form>
-                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($ar['id_depto']) ?>">
-                                                        <button style="width: 100%;" type="submit" class="btn btn-success">Gestionar</button>
+                                                        <form action="permisos" method="post">
+                                                            <input type="hidden"
+                                                                value="<?= htmlspecialchars($ar['id_depto']) ?>"
+                                                                name="id_depto">
+                                                            <button class="btn btn-success">Gestionar</button>
                                                         </form>
                                                     </td>
                                                     <td>
                                                         <form action="deptosyedificios/eliminarDepto" method="post"></form>
-                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($ar['id_depto']) ?>">
-                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <input type="hidden" name="id_depto"
+                                                            value="<?= htmlspecialchars($ar['id_depto']) ?>">
+                                                        <button style="width: 100%;" type="submit"
+                                                            class="btn btn-danger">Eliminar</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -197,14 +203,18 @@
                                                     <td><?= htmlspecialchars($rel['edificio']) ?></td>
                                                     <td>
                                                         <form action="" method="post"></form>
-                                                        <input type="hidden" name="id_depto_edificio" value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
-                                                        <button style="width: 100%;" type="submit" class="btn btn-success">Gestionar</button>
+                                                        <input type="hidden" name="id_depto_edificio"
+                                                            value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit"
+                                                            class="btn btn-success">Gestionar</button>
                                                         </form>
                                                     </td>
                                                     <td>
                                                         <form action="deptosyedificios/eliminarrelacion" method="POST"></form>
-                                                        <input type="hidden" name="id_depto_edificio" value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
-                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        <input type="hidden" name="id_depto_edificio"
+                                                            value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit"
+                                                            class="btn btn-danger">Eliminar</button>
                                                         </form>
                                                     </td>
                                                 </tr>
@@ -222,7 +232,7 @@
                                                         </select>
                                                     </td>
                                                     <td>
-                                                        <select  name="edificio" id="edificio">
+                                                        <select name="edificio" id="edificio">
                                                             <option value="">-- Seleccione un edificio --</option>
                                                             <?php foreach ($edificioslist as $edif): ?>
                                                                 <option value="<?= htmlspecialchars($edif['id_edificio']) ?>">
@@ -259,5 +269,4 @@
     <script src="<?= BASE_URL ?>assets/js/holder.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
-
 </html>

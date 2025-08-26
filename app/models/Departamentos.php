@@ -26,5 +26,13 @@ class Departamentos
         $stmt->bindParam(':id_depto', $id_depto);
         return $stmt->execute();
     }
+    public static function datosDepto($id_depto){
+        $db = Database::getConnection();
+        $sql = "SELECT * FROM departamentos WHERE id_depto = :id_depto";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id_depto', $id_depto);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
 }
 ?>

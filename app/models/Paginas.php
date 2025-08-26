@@ -1,0 +1,53 @@
+<?php
+require_once '../vendor/autoload.php';
+require_once dirname(__DIR__, 2) . '/config/Database.php';
+
+class Paginas
+{
+    public static function obtenerPaginas()
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM paginas");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function obtenerPaginasPorDepto($id_depto)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT id_pagina FROM depto_pagina WHERE id_depto = ?");
+        $stmt->execute([$id_depto]);
+
+        $resultados = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        return array_column($resultados, 'id_pagina');
+    }
+
+    public static function actualizarPermisos($id_depto, $paginas_a_guardar)
+    {
+        $db = Database::getConnection();
+
+        try {
+            $db->beginTransaction();
+
+            $stmt = $db->prepare("DELETE FROM depto_pagina WHERE id_depto = ?");
+            $stmt->execute([$id_depto]);
+
+            if (!empty($paginas_a_guardar)) {
+                $sql = "INSERT INTO depto_pagina (id_depto, id_pagina) VALUES (?, ?)";
+                $stmt = $db->prepare($sql);
+
+                foreach ($paginas_a_guardar as $pagina_id) {
+                    $stmt->execute([$id_depto, $pagina_id]);
+                }
+            }
+            $db->commit();
+
+            return true;
+        } catch (Exception $e) {
+            $db->rollBack();
+            return false;
+        }
+    }
+}
+?>
