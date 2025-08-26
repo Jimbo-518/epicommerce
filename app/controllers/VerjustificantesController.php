@@ -7,6 +7,7 @@ class VerjustificantesController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('verjustificantes');
 
         if (!Session::get('usuario')) {
             header("Location: " . BASE_URL . "login");
@@ -16,6 +17,8 @@ class VerjustificantesController extends Controller
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        
+        $permisos = Session::get('permisos');
 
         $justificantes = Justificante::listarTodos();
 
@@ -23,7 +26,8 @@ class VerjustificantesController extends Controller
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'justificantes' => $justificantes
+            'justificantes' => $justificantes,
+            'permisos' => $permisos
         ]);
     }
 }

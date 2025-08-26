@@ -6,7 +6,7 @@ require_once '../app/models/Departamentos.php';
 
 class EditarEmpleadoController extends Controller
 {
-    public function editarempleado()
+    public function index()
     {
         Session::start();
 
@@ -21,6 +21,8 @@ class EditarEmpleadoController extends Controller
         $edificioslist = Edificios::listaEdificios();
         $areaslist = Departamentos::listaAreas();
 
+        $permisos = Session::get('permisos');
+
         $error_message = Session::get('error_message');
         Session::remove('error_message');
 
@@ -32,7 +34,8 @@ class EditarEmpleadoController extends Controller
             'empleadodata' => $empleadodata,
             'edificioslist' => $edificioslist,
             'areaslist' => $areaslist,
-            'info_adicional' => $info_adicional
+            'info_adicional' => $info_adicional,
+            'permisos' => $permisos
         ]);
     }
 
@@ -46,7 +49,7 @@ class EditarEmpleadoController extends Controller
         $vacaciones = $_POST['vacaciones'];
 
         // Paso 1: Obtener el ID del departamento y el edificio
-        $id_depto_edificio = Usuario::obtenerIdDeptoEdificio($edificio_nombre, $area_nombre);
+        $id_depto_edificio = Edificios::obtenerIdDeptoEdificio($edificio_nombre, $area_nombre);
 
         if ($id_depto_edificio) {
             // Paso 2: Si el ID existe, actualizar el empleado

@@ -15,7 +15,8 @@ class DashboardController extends Controller {
         $id_empleado = Session::get('id_empleado');
         $area = Session::get('area');
         $name = Session::get('name');
-        $edificio = Session::get('edificio');
+        $edificio = Session::get('edificio');        
+        $permisos = Session::get('permisos');
         
         error_log("Usuario en sesión: " . ($area ?: 'No definido'));
         error_log("Nombre en sesión: " . ($name ?: 'No definido'));
@@ -27,7 +28,8 @@ class DashboardController extends Controller {
             'name' => $name,
             'edificio' => $edificio,
             'inventario' => $inventario,
-            'id_empleado' => $id_empleado
+            'id_empleado' => $id_empleado,
+            'permisos' => $permisos
         ]);
     }
 

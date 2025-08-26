@@ -20,6 +20,7 @@ class LoginController extends Controller {
             if ($resultado) {
                 $usuario = $resultado['usuario'];
                 $info_adicional = $resultado['info_adicional'];
+                $permisos = $resultado['permisos'];
 
                 Session::start();
                 Session::set('id_empleado', $usuario['id_empleado']);
@@ -29,6 +30,8 @@ class LoginController extends Controller {
 
                 Session::set('edificio', $info_adicional['edificio']);
                 Session::set('area', $info_adicional['departamento']);
+
+                Session::set('permisos', $permisos);
                 
                 header("Location: " . BASE_URL . "dashboard");
                 exit();

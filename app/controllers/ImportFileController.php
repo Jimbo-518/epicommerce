@@ -8,6 +8,7 @@ class ImportFileController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('importfile');
 
         if (!Session::get('usuario')) {
             header("Location: " . BASE_URL . "login");
@@ -17,6 +18,8 @@ class ImportFileController extends Controller
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        
+        $permisos = Session::get('permisos');
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -29,7 +32,8 @@ class ImportFileController extends Controller
             'name' => $name,
             'edificio' => $edificio,
             'error_message' => $error_message,
-            'message' => $message
+            'message' => $message,
+            'permisos' => $permisos
         ]);
     }
 

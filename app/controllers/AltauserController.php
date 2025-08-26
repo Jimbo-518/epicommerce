@@ -4,11 +4,12 @@ require_once '../app/models/Usuario.php';
 require_once '../app/models/Edificios.php';
 require_once '../app/models/Departamentos.php';
 
-class UsuarioController extends Controller
+class AltauserController extends Controller
 {
-    public function altauser()
+    public function index()
     {
         Session::start();
+        $this->verificarPermiso('altauser');
 
         $area = Session::get('area');
         $name = Session::get('name');
@@ -16,6 +17,8 @@ class UsuarioController extends Controller
 
         $edificioslist = Edificios::listaEdificios();
         $areaslist = Departamentos::listaAreas();
+
+        $permisos = Session::get('permisos');
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -26,7 +29,8 @@ class UsuarioController extends Controller
             'name' => $name,
             'edificio' => $edificio,
             'edificioslist' => $edificioslist,
-            'areaslist' => $areaslist
+            'areaslist' => $areaslist,
+            'permisos' => $permisos
         ]);
     }
 

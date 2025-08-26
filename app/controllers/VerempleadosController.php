@@ -5,13 +5,16 @@ require_once '../app/models/Asistencias.php';
 
 class VerempleadosController extends Controller
 {
-    public function verempleados()
+    public function index()
     {
         Session::start();
+        $this->verificarPermiso('verempleados');
 
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        
+        $permisos = Session::get('permisos');
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -23,7 +26,8 @@ class VerempleadosController extends Controller
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'empleados' => $empleados
+            'empleados' => $empleados,
+            'permisos' => $permisos
         ]);
     }
 

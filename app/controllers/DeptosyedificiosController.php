@@ -10,6 +10,7 @@ class DeptosyedificiosController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('deptosyedificios');
 
         if (!Session::get('usuario')) {
             header("Location: " . BASE_URL . "login");
@@ -23,6 +24,8 @@ class DeptosyedificiosController extends Controller
         $edificioslist = Edificios::listaEdificios();
         $areaslist = Departamentos::listaAreas();
         $relacioneslist = Edificios::obtenerRelacionesDeptoEdificio();
+        
+        $permisos = Session::get('permisos');
 
         // Obtener modelos únicos
         $modelos = Inventario::obtenerModelos();
@@ -34,7 +37,8 @@ class DeptosyedificiosController extends Controller
             'modelos' => $modelos,
             'edificioslist' => $edificioslist,
             'areaslist' => $areaslist,
-            'relacioneslist' => $relacioneslist
+            'relacioneslist' => $relacioneslist,
+            'permisos' => $permisos
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
+require_once 'Paginas.php'; 
 require_once dirname(__DIR__, 2) . '/config/Database.php';
 
 class Usuario
@@ -20,7 +21,8 @@ class Usuario
                 $sql_info = "
         SELECT
             d.departamento,
-            ed.edificio
+            ed.edificio,
+            d.id_depto
         FROM
             departamento_edificio de
         JOIN
@@ -35,12 +37,13 @@ class Usuario
                 $stmt_info->execute();
                 $info_adicional = $stmt_info->fetch(PDO::FETCH_ASSOC);
 
-                if ($info_adicional) {
-                    echo "Departamento: " . $info_adicional['departamento'] . "<br>";
-                    echo "Edificio: " . $info_adicional['edificio'] . "<br>";
+                $permisos = Paginas::obtenerPaginasPermitidas($info_adicional['id_depto']);
+
+                if ($info_adicional && $permisos) {
                     return [
                         'usuario' => $usuario,
-                        'info_adicional' => $info_adicional
+                        'info_adicional' => $info_adicional,
+                        'permisos' => $permisos
                     ];
                 } else {
                     return false;

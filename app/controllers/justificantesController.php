@@ -8,6 +8,7 @@ class JustificantesController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('justificantes');
 
         if (!Session::get('usuario')) {
             header("Location: " . BASE_URL . "login");
@@ -17,6 +18,8 @@ class JustificantesController extends Controller
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        
+        $permisos = Session::get('permisos');
 
         $empleados = Usuario::listaempleados();
 
@@ -24,7 +27,8 @@ class JustificantesController extends Controller
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
-            'empleados' => $empleados
+            'empleados' => $empleados,
+            'permisos' => $permisos
         ]);
     }
 

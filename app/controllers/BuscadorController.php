@@ -8,6 +8,7 @@ class BuscadorController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('buscador');
 
         if (!Session::get('usuario')) {
             header("Location: " . BASE_URL . "login");
@@ -17,6 +18,7 @@ class BuscadorController extends Controller
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        $permisos = Session::get('permisos');
 
         // Obtener modelos únicos
         $modelos = Inventario::obtenerModelos();
@@ -26,6 +28,7 @@ class BuscadorController extends Controller
             'name' => $name,
             'edificio' => $edificio,
             'modelos' => $modelos,
+            'permisos' => $permisos
         ]);
     }
 

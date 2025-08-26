@@ -7,10 +7,12 @@ class BajaEmpleadoController extends Controller
     public function index()
     {
         Session::start();
+        $this->verificarPermiso('bajaEmpleado');
 
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        $permisos = Session::get('permisos');
 
         $id = $_GET['id'];
         $resultado = Usuario::pushUserID($id);
@@ -26,7 +28,8 @@ class BajaEmpleadoController extends Controller
             'name' => $name,
             'edificio' => $edificio,
             'empleado' => $empleadodata,
-            'info_adicional' => $info_adicional
+            'info_adicional' => $info_adicional,
+            'permisos' => $permisos
         ]);
     }
 

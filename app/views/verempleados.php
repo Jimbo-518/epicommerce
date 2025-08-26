@@ -90,7 +90,7 @@
                                     </td>
 
                                     <td>
-                                        <a href="<?= BASE_URL ?>editarEmpleado/editarempleado?id=<?= $empleado['id_empleado'] ?>"
+                                        <a href="<?= BASE_URL ?>editarEmpleado?id=<?= $empleado['id_empleado'] ?>"
                                             class="btn btn-info">Editar</a>
                                     </td>
                                     <td>

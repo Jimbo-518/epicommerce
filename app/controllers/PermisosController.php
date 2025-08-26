@@ -25,6 +25,8 @@ class PermisosController extends Controller
         $paginaslist = Paginas::obtenerPaginas();
         $datos_depto = Departamentos::datosDepto($id_depto);
         $permisos_depto = Paginas::obtenerPaginasPorDepto($id_depto);
+        
+        $permisos = Session::get('permisos');
 
         $this->view('permisos', [
             'area' => $area,
@@ -32,7 +34,8 @@ class PermisosController extends Controller
             'edificio' => $edificio,
             'paginaslist' => $paginaslist,
             'datos_depto' => $datos_depto,
-            'permisos_depto' => $permisos_depto
+            'permisos_depto' => $permisos_depto,
+            'permisos' => $permisos
         ]);
     }
 
