@@ -85,29 +85,34 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Edificio</th>
                                                 <th>Ubicación</th>
+                                                <th> - </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($edificioslist as $edif): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($edif['id_edificio']) ?></td>
                                                     <td><?= htmlspecialchars($edif['edificio']) ?></td>
                                                     <td><?= htmlspecialchars($edif['ubicacion']) ?></td>
+                                                    <td>
+                                                        <form action="deptosyedificios/eliminarEdificio" method="POST"></form>
+                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($edif['id_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tr>
-                                            <form action="">
+                                            <form action="deptosyedificios/nuevoedificio" method="POST">
                                                 <td>
                                                     <input style="width: 100%;" type="text" name="edificio"
                                                         placeholder="Nuevo Edificio" required>
                                                 </td>
                                                 <td>
                                                     <input style="width: 100%;" type="text" name="ubicacion"
-                                                        placeholder="Ubicación" required>
+                                                        placeholder="Ubicación (coordenadas)" required>
                                                 </td>
                                                 <td>
                                                     <button style="width: 100%;" type="submit"
@@ -128,21 +133,33 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Departamento</th>
+                                                <th>Permisos</th>
+                                                <th> - </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($areaslist as $ar): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($ar['id_depto']) ?></td>
                                                     <td><?= htmlspecialchars($ar['departamento']) ?></td>
+                                                    <td>
+                                                        <form action="" method="post"></form>
+                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($ar['id_depto']) ?>">
+                                                        <button style="width: 100%;" type="submit" class="btn btn-success">Gestionar</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="deptosyedificios/eliminarDepto" method="post"></form>
+                                                        <input type="hidden" name="id_depto" value="<?= htmlspecialchars($ar['id_depto']) ?>">
+                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                             <tr>
-                                                <form action="">
+                                                <form action="deptosyedificios/nuevodepto" method="POST">
                                                     <td>
-                                                        <input style="width: 100%;" type="text" name="edificio"
+                                                        <input style="width: 100%;" type="text" name="depto"
                                                             placeholder="Nuevo Departamento" required>
                                                     </td>
                                                     <td>
@@ -167,26 +184,38 @@
                                     <table>
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
                                                 <th>Departamento</th>
                                                 <th>Edificio</th>
+                                                <th>Horario</th>
+                                                <th> - </th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php foreach ($relacioneslist as $rel): ?>
                                                 <tr>
-                                                    <td><?= htmlspecialchars($rel['id_depto_edificio']) ?></td>
                                                     <td><?= htmlspecialchars($rel['departamento']) ?></td>
                                                     <td><?= htmlspecialchars($rel['edificio']) ?></td>
+                                                    <td>
+                                                        <form action="" method="post"></form>
+                                                        <input type="hidden" name="id_depto_edificio" value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit" class="btn btn-success">Gestionar</button>
+                                                        </form>
+                                                    </td>
+                                                    <td>
+                                                        <form action="deptosyedificios/eliminarrelacion" method="POST"></form>
+                                                        <input type="hidden" name="id_depto_edificio" value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
+                                                        <button style="width: 100%;" type="submit" class="btn btn-danger">Eliminar</button>
+                                                        </form>
+                                                    </td>
                                                 </tr>
                                             <?php endforeach; ?>
                                             <tr>
-                                                <form action="">
+                                                <form action="deptosyedificios/nuevarelacion" method="POST">
                                                     <td>
                                                         <select name="departamento" id="departamento">
-                                                            <option value="">-- Seleccione un área --</option>
+                                                            <option value="">-- Seleccione un Depto --</option>
                                                             <?php foreach ($areaslist as $ar): ?>
-                                                                <option value="<?= htmlspecialchars($ar['departamento']) ?>">
+                                                                <option value="<?= htmlspecialchars($ar['id_depto']) ?>">
                                                                     <?= htmlspecialchars($ar['departamento']) ?>
                                                                 </option>
                                                             <?php endforeach; ?>
@@ -196,7 +225,7 @@
                                                         <select  name="edificio" id="edificio">
                                                             <option value="">-- Seleccione un edificio --</option>
                                                             <?php foreach ($edificioslist as $edif): ?>
-                                                                <option value="<?= htmlspecialchars($edif['edificio']) ?>">
+                                                                <option value="<?= htmlspecialchars($edif['id_edificio']) ?>">
                                                                     <?= htmlspecialchars($edif['edificio']) ?>
                                                                 </option>
                                                             <?php endforeach; ?>

@@ -59,5 +59,43 @@ class Edificios
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public static function insertarEdificio($edificio, $ubicacion)
+    {
+        $db = Database::getConnection();
+        $sql = "INSERT INTO edificios (edificio, ubicacion) VALUES (:edificio, :ubicacion)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':edificio', $edificio);
+        $stmt->bindParam(':ubicacion', $ubicacion);
+        return $stmt->execute();
+    }
+
+    public static function insertarRelacionDeptoEdificio($id_depto, $id_edificio)
+    {
+        $db = Database::getConnection();
+        $sql = "INSERT INTO departamento_edificio (id_depto, id_edificio) VALUES (:id_depto, :id_edificio)";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id_depto', $id_depto);
+        $stmt->bindParam(':id_edificio', $id_edificio);
+        return $stmt->execute();
+    }
+
+    public static function eliminarRelacionDeptoEdificio($id_depto_edificio)
+    {
+        $db = Database::getConnection();
+        $sql = "DELETE FROM departamento_edificio WHERE id_depto_edificio = :id_depto_edificio";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id_depto_edificio', $id_depto_edificio);
+        return $stmt->execute();
+    }
+
+    public static function eliminarEdificio($id_edificio)
+    {
+        $db = Database::getConnection();
+        $sql = "DELETE FROM edificios WHERE id_edificio = :id_edificio";
+        $stmt = $db->prepare($sql);
+        $stmt->bindParam(':id_edificio', $id_edificio);
+        return $stmt->execute();
+    }
 }
 ?>
