@@ -30,7 +30,20 @@ class Paginas
         $sql = "SELECT p.nombre, p.url 
             FROM paginas p
             JOIN depto_pagina dp ON p.id_pagina = dp.id_pagina
-            WHERE dp.id_depto = ?";
+            WHERE dp.id_depto = ? AND p.tipo = 'pagina' ";
+        $stmt = $db->prepare($sql);
+        $stmt->execute([$id_depto]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function obtenerWidgetsPermitidos($id_depto)
+    {
+        $db = Database::getConnection();
+
+        $sql = "SELECT p.nombre, p.url 
+            FROM paginas p
+            JOIN depto_pagina dp ON p.id_pagina = dp.id_pagina
+            WHERE dp.id_depto = ? AND p.tipo = 'widget' ";
         $stmt = $db->prepare($sql);
         $stmt->execute([$id_depto]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);

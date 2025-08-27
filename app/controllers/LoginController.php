@@ -21,6 +21,9 @@ class LoginController extends Controller {
                 $usuario = $resultado['usuario'];
                 $info_adicional = $resultado['info_adicional'];
                 $permisos = $resultado['permisos'];
+                
+                $widgets_raw = $resultado['widgets'];
+                $widgets = array_column($widgets_raw, 'url');
 
                 Session::start();
                 Session::set('id_empleado', $usuario['id_empleado']);
@@ -32,6 +35,7 @@ class LoginController extends Controller {
                 Session::set('area', $info_adicional['departamento']);
 
                 Session::set('permisos', $permisos);
+                Session::set('widgets', $widgets);
                 
                 header("Location: " . BASE_URL . "dashboard");
                 exit();

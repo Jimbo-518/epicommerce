@@ -2,6 +2,7 @@
 require_once '../app/core/Session.php';
 require_once '../app/models/Inventario.php';
 require_once '../app/models/Asistencias.php';
+require_once '../app/models/Paginas.php';
 
 class DashboardController extends Controller {
     public function index() {
@@ -12,11 +13,12 @@ class DashboardController extends Controller {
             exit();
         }
 
-        $id_empleado = Session::get('id_empleado');
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');        
         $permisos = Session::get('permisos');
+
+        $widgets = Session::get('widgets');
         
         error_log("Usuario en sesión: " . ($area ?: 'No definido'));
         error_log("Nombre en sesión: " . ($name ?: 'No definido'));
@@ -28,8 +30,8 @@ class DashboardController extends Controller {
             'name' => $name,
             'edificio' => $edificio,
             'inventario' => $inventario,
-            'id_empleado' => $id_empleado,
-            'permisos' => $permisos
+            'permisos' => $permisos,
+            'widgets' => $widgets
         ]);
     }
 

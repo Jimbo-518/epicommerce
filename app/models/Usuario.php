@@ -38,12 +38,14 @@ class Usuario
                 $info_adicional = $stmt_info->fetch(PDO::FETCH_ASSOC);
 
                 $permisos = Paginas::obtenerPaginasPermitidas($info_adicional['id_depto']);
+                $widgets = Paginas::obtenerWidgetsPermitidos($info_adicional['id_depto']);
 
                 if ($info_adicional && $permisos) {
                     return [
                         'usuario' => $usuario,
                         'info_adicional' => $info_adicional,
-                        'permisos' => $permisos
+                        'permisos' => $permisos,
+                        'widgets' => $widgets
                     ];
                 } else {
                     return false;
