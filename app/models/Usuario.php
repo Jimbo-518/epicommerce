@@ -113,7 +113,7 @@ class Usuario
         $stmt->execute();
         $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        if ($usuario['id_depto_edificio']) {
+        if ($usuario) {
 
             $id_depto_edificio = $usuario['id_depto_edificio'];
 
