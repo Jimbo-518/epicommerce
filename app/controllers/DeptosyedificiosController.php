@@ -24,10 +24,9 @@ class DeptosyedificiosController extends Controller
         $edificioslist = Edificios::listaEdificios();
         $areaslist = Departamentos::listaAreas();
         $relacioneslist = Edificios::obtenerRelacionesDeptoEdificio();
-        
+
         $permisos = Session::get('permisos');
 
-        // Obtener modelos únicos
         $modelos = Inventario::obtenerModelos();
 
         $this->view('deptosyedificios', [
@@ -68,14 +67,15 @@ class DeptosyedificiosController extends Controller
         }
     }
 
-    public function nuevodepto(){
+    public function nuevodepto()
+    {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $depto = $_POST['depto'];
 
             if (empty($depto)) {
                 header("Location: " . BASE_URL . "deptosyedificios");
                 exit();
-            
+
             }
             $resultado = Departamentos::insertarDepartamento($depto);
             if ($resultado) {

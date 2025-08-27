@@ -1,6 +1,6 @@
 <?php
 require_once '../vendor/autoload.php';
-require_once 'Paginas.php'; 
+require_once 'Paginas.php';
 require_once dirname(__DIR__, 2) . '/config/Database.php';
 
 class Usuario
@@ -147,7 +147,6 @@ class Usuario
     {
         $db = Database::getConnection();
 
-        // La consulta ahora actualiza la columna 'id_depto_edificio'
         $stmt = $db->prepare("
         UPDATE empleados
         SET
@@ -159,7 +158,7 @@ class Usuario
 
         return $stmt->execute([
             'nombre' => $nombre,
-            'id_depto_edificio' => $id_depto_edificio, // Se pasa el ID obtenido
+            'id_depto_edificio' => $id_depto_edificio,
             'vacaciones' => $vacaciones,
             'id' => $id
         ]);
@@ -186,6 +185,14 @@ class Usuario
             'fecha_inicio' => $fecha_inicio,
             'fecha_fin' => $fecha_fin
         ]);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public static function getPermisos($usuarioId)
+    {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("SELECT * FROM permisos WHERE usuario_id = :id");
+        $stmt->execute(['id' => $usuarioId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
