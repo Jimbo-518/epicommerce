@@ -202,11 +202,11 @@
                                                     <td><?= htmlspecialchars($rel['departamento']) ?></td>
                                                     <td><?= htmlspecialchars($rel['edificio']) ?></td>
                                                     <td>
-                                                        <form action="" method="post"></form>
-                                                        <input type="hidden" name="id_depto_edificio"
-                                                            value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
-                                                        <button style="width: 100%;" type="submit"
-                                                            class="btn btn-success">Gestionar</button>
+                                                        <form action="<?= BASE_URL ?>horarios/gestionar" method="post">
+                                                            <input type="hidden" name="id_depto_edificio"
+                                                                value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
+                                                            <button style="width: 100%;" type="submit"
+                                                                class="btn btn-success">Gestionar</button>
                                                         </form>
                                                     </td>
                                                     <td>
@@ -269,4 +269,5 @@
     <script src="<?= BASE_URL ?>assets/js/holder.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/ie10-viewport-bug-workaround.js"></script>
 </body>
+
 </html>
