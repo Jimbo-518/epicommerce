@@ -65,7 +65,7 @@ class AltauserController extends Controller
                 Session::set('error_message', "Error al registrar usuario.");
             }
 
-            header("Location: " . BASE_URL . "usuario/altauser");
+            header("Location: " . BASE_URL . "altauser");
             exit();
         }
 

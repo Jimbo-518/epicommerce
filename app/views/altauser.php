@@ -33,7 +33,7 @@ Session::remove('error_message');
                     <div class="alert alert-danger"><?= htmlspecialchars($error_message) ?></div>
                 <?php endif; ?>
 
-                <form method="POST" action="<?= BASE_URL ?>usuario/registrar">
+                <form method="POST" action="altauser/registrar">
 
                     <div class="row">
                         <div class="col-md-6">
@@ -94,7 +94,7 @@ Session::remove('error_message');
 
                         <div class="col-md-6">
                             <label for="fecha_ingreso" class="form-label">Fecha de ingreso:</label>
-                            <input class="form-control form-group" type="date" id="fecha_ingreso" name="['edificio']"
+                            <input class="form-control form-group" type="date" id="fecha_ingreso" name="fecha_ingreso"
                                 required>
                         </div>
                     </div>
