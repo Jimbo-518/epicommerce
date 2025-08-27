@@ -13,9 +13,6 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="<?= BASE_URL ?>dashboard">Inicio</a></li>
-                <?php if ($edificio == 'cedis'): ?>
-                <li><a href="<?= BASE_URL ?>buscador">Buscador</a></li>
-                <?php endif; ?>
                 <li><a href="<?= BASE_URL ?>login/logout">Cerrar Sesión</a></li>
             </ul>
         </div>

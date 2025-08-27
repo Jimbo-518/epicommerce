@@ -202,7 +202,7 @@
                                                     <td><?= htmlspecialchars($rel['departamento']) ?></td>
                                                     <td><?= htmlspecialchars($rel['edificio']) ?></td>
                                                     <td>
-                                                        <form action="<?= BASE_URL ?>horarios/gestionar" method="post">
+                                                        <form action="horarios" method="post">
                                                             <input type="hidden" name="id_depto_edificio"
                                                                 value="<?= htmlspecialchars($rel['id_depto_edificio']) ?>">
                                                             <button style="width: 100%;" type="submit"
@@ -258,6 +258,7 @@
 
                         <div class="col-md-4"></div>
                     </div>
+                    
                 </div>
             </div>
         </div>

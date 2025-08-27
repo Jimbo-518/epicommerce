@@ -187,14 +187,5 @@ class Usuario
         ]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
-
-    public static function getPermisos($usuarioId)
-    {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM permisos WHERE usuario_id = :id");
-        $stmt->execute(['id' => $usuarioId]);
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
-    }
-
 }
 ?>

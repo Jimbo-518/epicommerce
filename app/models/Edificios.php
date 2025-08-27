@@ -97,14 +97,5 @@ class Edificios
         $stmt->bindParam(':id_edificio', $id_edificio);
         return $stmt->execute();
     }
-
-    public static function getById($idEdificio)
-    {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM edificios WHERE id_edificio = :id");
-        $stmt->execute(['id' => $idEdificio]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
 }
 ?>

@@ -9,6 +9,10 @@ class EditarEmpleadoController extends Controller
     public function index()
     {
         Session::start();
+        if (!Session::get('usuario')) {
+            header("Location: " . BASE_URL . "login");
+            exit();
+        }
 
         $area = Session::get('area');
         $name = Session::get('name');

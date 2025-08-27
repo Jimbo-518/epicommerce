@@ -9,6 +9,10 @@ class AltauserController extends Controller
     public function index()
     {
         Session::start();
+        if (!Session::get('usuario')) {
+            header("Location: " . BASE_URL . "login");
+            exit();
+        }
         $this->verificarPermiso('altauser');
 
         $area = Session::get('area');
