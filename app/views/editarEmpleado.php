@@ -111,7 +111,7 @@
                     </div>
 
                     <button type="submit" class="btn btn-custom btn-block">Guardar cambios</button>
-                    <a href="<?= BASE_URL ?>verempleados/verempleados" class="btn btn-back btn-block">Regresar</a>
+                    <a href="<?= BASE_URL ?>verempleados" class="btn btn-back btn-block">Regresar</a>
                 </form>
             </div>
 

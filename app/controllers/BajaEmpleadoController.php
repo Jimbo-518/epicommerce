@@ -11,7 +11,6 @@ class BajaEmpleadoController extends Controller
             header("Location: " . BASE_URL . "login");
             exit();
         }
-        $this->verificarPermiso('bajaEmpleado');
 
         $area = Session::get('area');
         $name = Session::get('name');
