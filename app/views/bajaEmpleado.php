@@ -85,7 +85,7 @@
                             value="<?= htmlspecialchars($empleado['id_empleado']) ?>">
                         <div class="d-flex justify-content-between">
                             <button type="submit" class="btn btn-danger" style="flex: 0 0 48%;">Sí, eliminar</button>
-                            <a href="<?= BASE_URL ?>verempleados/verempleados" class="btn btn-back"
+                            <a href="<?= BASE_URL ?>verempleados" class="btn btn-back"
                                 style="flex: 0 0 48%;">No, regresar</a>
                         </div>
                     </form>
