@@ -76,14 +76,19 @@ Session::remove('error_message');
 
                 <form action="<?= BASE_URL ?>justificantes/store" method="POST" enctype="multipart/form-data">
                     <label for="id_empleado">Empleado</label>
-                    <select name="id_empleado" id="id_empleado" class="selection" required>
+                    <input type="text" list="empleadoslist" placeholder="Busque un empleado" id="nombre_empleado"
+                        class="selection" required>
+                    <input type="hidden" name="id_empleado" id="id_empleado_hidden">
+
+                    <datalist id="empleadoslist">
                         <option value="">Seleccione un empleado</option>
                         <?php foreach ($empleados as $empleado): ?>
-                            <option value="<?= $empleado['id_empleado'] ?>"><?= htmlspecialchars($empleado['nombre']) ?>
+                            <option data-id="<?= $empleado['id_empleado'] ?>"
+                                value="<?= htmlspecialchars($empleado['nombre']) ?>">
                             </option>
                         <?php endforeach; ?>
-                    </select>
-
+                    </datalist>
+                    </input>
                     <label for="fecha">Fecha</label>
                     <input type="date" name="fecha" id="fecha" required>
 
@@ -120,6 +125,22 @@ Session::remove('error_message');
 
     <script src="<?= BASE_URL ?>assets/js/jquery.min.js"></script>
     <script src="<?= BASE_URL ?>assets/js/bootstrap.min.js"></script>
+
+    <script>
+        const nombreInput = document.getElementById('nombre_empleado');
+        const idInputOculto = document.getElementById('id_empleado_hidden');
+        const datalist = document.getElementById('empleadoslist');
+
+        nombreInput.addEventListener('input', function () {
+            const opcionSeleccionada = datalist.querySelector(`option[value="${this.value}"]`);
+
+            if (opcionSeleccionada) {
+                idInputOculto.value = opcionSeleccionada.getAttribute('data-id');
+            } else {
+                idInputOculto.value = '';
+            }
+        });
+    </script>
 </body>
 
 </html>
