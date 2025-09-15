@@ -159,7 +159,6 @@ class Asistencias
         return true;
     }
 
-
     public static function generarExcel($dateInit, $datefin)
     {
         // ========= Helpers de tiempo =========
@@ -606,17 +605,141 @@ class Asistencias
             }
         }
 
-        // ========== 5) EXPORTAR ==========
+        // ========== 5) HOJAS CALENDARIO (una por cada depto_edificio) ==========
+        foreach ($deptosEdificios as $de) {
+            $idDE = (int) $de['id_depto_edificio'];
+            $nombreCalendario = 'Calendario - ' . $de['departamento'] . ' - ' . $de['edificio'];
+
+            $sheet = $spreadsheet->createSheet();
+            $sheet->setTitle($safeSheetTitle($nombreCalendario));
+
+            // ----- Rango de Fechas -----
+            $dates = [];
+            $start = new DateTime($dateInit);
+            $end = new DateTime($datefin);
+            while ($start <= $end) {
+                $dates[] = $start->format('Y-m-d');
+                $start->modify('+1 day');
+            }
+
+            // ----- Encabezados -----
+            $sheet->setCellValue('A1', 'COLABORADOR');
+            $sheet->setCellValue('B1', 'ID');
+            $colIndex = 'C';
+            foreach ($dates as $date) {
+                $sheet->setCellValue($colIndex . '1', (new DateTime($date))->format('d'));
+                $colIndex++;
+            }
+
+            // ----- Traer Empleados -----
+            $empleadosStmt = $db->prepare("SELECT id_empleado, nombre, id_depto_edificio 
+                                   FROM empleados 
+                                   WHERE id_depto_edificio = ? 
+                                   ORDER BY nombre");
+            $empleadosStmt->execute([$idDE]);
+            $empleados = $empleadosStmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // ----- Asistencias -----
+            $asisStmt = $db->prepare("
+        SELECT id_empleado, fecha, hora 
+        FROM asistencias
+        WHERE fecha BETWEEN ? AND ? AND id_empleado IN (
+            SELECT id_empleado FROM empleados WHERE id_depto_edificio = ?
+        )
+    ");
+            $asisStmt->execute([$dateInit, $datefin, $idDE]);
+            $asistencias = $asisStmt->fetchAll(PDO::FETCH_ASSOC);
+            $asistMap = [];
+            foreach ($asistencias as $a) {
+                $asistMap[$a['id_empleado']][$a['fecha']][] = $a['hora']; // <-- guardamos todos los registros
+            }
+
+            // ----- Justificantes -----
+            $justStmt = $db->prepare("
+        SELECT id_empleado, fecha
+        FROM justificantes
+        WHERE fecha BETWEEN ? AND ? AND id_empleado IN (
+            SELECT id_empleado FROM empleados WHERE id_depto_edificio = ?
+        )
+    ");
+            $justStmt->execute([$dateInit, $datefin, $idDE]);
+            $justificantes = $justStmt->fetchAll(PDO::FETCH_ASSOC);
+            $justMap = [];
+            foreach ($justificantes as $j) {
+                $justMap[$j['id_empleado']][$j['fecha']] = true;
+            }
+
+            // ----- Estilos -----
+            $styleA = ['fill' => ['fillType' => 'solid', 'color' => ['rgb' => '00FF00']]]; // Verde 
+            $styleLate = ['fill' => ['fillType' => 'solid', 'color' => ['rgb' => 'FFA500']]]; // Naranja 
+            $styleF = ['fill' => ['fillType' => 'solid', 'color' => ['rgb' => 'FF0000']]]; // Rojo 
+            $styleJ = ['fill' => ['fillType' => 'solid', 'color' => ['rgb' => '0000FF']]]; // Azul
+
+            // ----- Llenar Datos -----
+            $row = 2;
+            foreach ($empleados as $emp) {
+                $sheet->setCellValue('A' . $row, $emp['nombre']);
+                $sheet->setCellValue('B' . $row, $emp['id_empleado']);
+
+                $col = 'C';
+                foreach ($dates as $date) {
+                    $dayIndex = (int) (new DateTime($date))->format('N'); // 1=Lun..7=Dom
+                    $cellValue = '';
+                    $style = $styleF; // Default Falta
+
+                    $hor = $horarios[$idDE][$dayIndex] ?? null;
+                    if (!$hor) {
+                        $cellValue = '';
+                        $style = null;
+                    } else {
+                        $horaEntrada = $hor['entrada'];
+                        $tol = $sec($hor['tolerancia']) - $sec('00:00:00');
+                        $horaLimite = $addSeconds($horaEntrada, $tol);
+
+                        if (isset($asistMap[$emp['id_empleado']][$date])) {
+                            // Tomar el primer registro del día
+                            $horaAsistencia = min($asistMap[$emp['id_empleado']][$date]);
+                            if ($diffSec($horaAsistencia, $horaLimite) > 0) {
+                                $cellValue = $horaAsistencia; // Retardo
+                                $style = $styleLate;
+                            } else {
+                                $cellValue = 'A'; // Asistencia puntual
+                                $style = $styleA;
+                            }
+                        } elseif (isset($justMap[$emp['id_empleado']][$date])) {
+                            $cellValue = 'J'; // Justificado
+                            $style = $styleJ;
+                        } else {
+                            $cellValue = 'F'; // Falta
+                            $style = $styleF;
+                        }
+                    }
+
+                    $sheet->setCellValue($col . $row, $cellValue);
+                    if ($style) {
+                        $sheet->getStyle($col . $row)->applyFromArray($style);
+                    }
+                    $col++;
+                }
+                $row++;
+            }
+
+            // Ajustar ancho columnas
+            foreach (range('A', $sheet->getHighestColumn()) as $col) {
+                $sheet->getColumnDimension($col)->setAutoSize(true);
+            }
+        }
+
+        // ========== 6) EXPORTAR ==========
         // Ponemos como primera hoja la del primer Resumen
         $spreadsheet->setActiveSheetIndex(0);
 
         header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="Reporte_Asistencias.xls"');
+        header('Content-Disposition: attachment;filename="Reporte_Asistencias.xlsx"');
         header('Cache-Control: max-age=0');
-        $writer = IOFactory::createWriter($spreadsheet, 'Xls');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $writer->save('php://output');
         exit;
     }
-
 }
 ?>

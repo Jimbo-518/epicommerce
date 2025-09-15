@@ -79,6 +79,7 @@ class DashboardController extends Controller {
         $area = Session::get('area');
         $name = Session::get('name');
         $edificio = Session::get('edificio');
+        $permisos = Session::get('permisos');
 
         $error_message = Session::get('error_message');
         Session::remove('error_message');
@@ -90,6 +91,7 @@ class DashboardController extends Controller {
             'area' => $area,
             'name' => $name,
             'edificio' => $edificio,
+            'permisos' => $permisos,
             'error_message' => $error_message,
             'message' => $message,
             'archivo' => Session::get('archivo_subido')

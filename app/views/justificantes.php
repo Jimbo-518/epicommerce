@@ -81,7 +81,7 @@ Session::remove('error_message');
                     <input type="hidden" name="id_empleado" id="id_empleado_hidden">
 
                     <datalist id="empleadoslist">
-                        <option value="">Seleccione un empleado</option>
+                        <option value="todos">Todos</option>
                         <?php foreach ($empleados as $empleado): ?>
                             <option data-id="<?= $empleado['id_empleado'] ?>"
                                 value="<?= htmlspecialchars($empleado['nombre']) ?>">
